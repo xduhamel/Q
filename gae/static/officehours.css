@@ -1,0 +1,228 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  font-size: 14px;
+  line-height: 20px;
+
+}
+h1 {
+  margin: 10px 0px;
+  font-size: 38px;
+  line-height: 44px;
+  font-weight: 700;
+
+}
+h2 {
+  margin: 10px 0px;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
+}
+h3 {
+  margin: 10px 0px;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+}
+h4 {
+  margin: 10px 0px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+}
+h5 {
+  margin: 10px 0px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+}
+h6 {
+  margin: 10px 0px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 700;
+}
+p {
+  margin-bottom: 5px;
+}
+.button {
+  display: inline-block;
+  padding: 0px 15px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+}
+@media (max-width: 479px) {
+  body {
+    font-weight: 400;
+    text-align: center;
+  }
+  h1 {
+    display: block;
+    margin-top: 24px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1px;
+    padding-left: 1px;
+    float: none;
+    font-family:'Open Sans', sans-serif;
+    color: #111125;
+    font-weight: 100;
+    text-align: center;
+    color: #990000;
+  }
+  h3{
+    font-family:'Open Sans', sans-serif;
+    text-align: center;
+  }
+  .createclassbutton {
+      width: 339px;
+      margin-right: 6px;
+      padding-right: 20px; 
+      background-color: #111125;
+      color: #00bad8;
+      text-align: center; 
+  }
+  .textfield {
+      border-left-color: #aaa;
+  }
+  .label {
+    border-left-color: #111125; 
+    font-weight: 400;
+  }
+  .login {
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-bottom: 19px;
+    padding-left: 0px;
+    font-family:'Open Sans', sans-serif;
+    text-align: left;
+  }
+  .submitbutton {
+    float: right;
+    background: #33CCFF
+  }
+  .header {
+    background-color: #111125;
+  }
+.button.classbutton {
+    margin-top: 3px;
+    margin-right: 0px;
+    margin-bottom: 9px;
+    padding: 8px 71px;
+  
+  }
+
+  .button.removeClass{
+    margin-left: 0px;
+    margin-top:3px;
+    margin-bottom:9px;
+    padding:8px;
+    border: solid white;
+    color: white;
+  }
+  .button.createaclass {
+    margin-top: 24px;
+    padding-right: 85px;
+    padding-left: 85px;
+    font-size: 15px;
+  }
+
+.classlist{
+  font-size: 0;
+}
+
+.button{
+  font-size: 14pt;
+  background: #33CCFF;
+}
+
+.help{
+  text-align: right;
+  float: right;
+  padding-right: 3px;
+}
+
+a:link{
+  color:black;
+}
+
+  font-family:'Open Sans', sans-serif;
+  }
+  .button {
+    margin-right: 50px;
+    margin-left: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    text-align: center;
+  }
+  .q1 {
+    border: 1px solid white;
+    background-color: #efefef;
+    box-shadow: black 1px 1px 3px 0px, white 0px 0px 6px 0px, rgba(255, 255, 255, 0.49) 0px 1px 0px 0px inset, black 0px 0px 8px 0px inset, black 1px 1px 3px 0px, white 0px 0px 6px 0px, black 1px 1px 3px 0px;
+    opacity: 0.25;
+  }
+  .title1 {
+    opacity: 1;
+    font-family:'Open Sans', sans-serif;
+    color: black;
+    font-size: 14px;
+  }
+  .q2 {
+    height: 35px;
+    background-color: #3b3b3b;
+    color: #111125;
+  }
+  .sep1 {
+    height: 35px;
+    border: 1px solid #3b3b3b;
+    background-color: #3b3b3b;
+  }
+  .sep2 {
+    height: 35px;
+    background-color: #3b3b3b;
+  }
+  .sep4 {
+    height: 35px;
+    background-color: #3b3b3b;
+  }
+  .joinButton {
+  display: inline-block;
+  padding: 4px 15px;
+  background-color: #33CCFF;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  float:left;
+}
+.addQButton{
+  color: black;
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.navbarbutton {
+    position: static;
+    left: 0px;
+    top: 0px;
+    width: 75px;
+    padding-left: 18px;
+    float: left;
+    clear: none;
+  }
+  .icon {
+    margin-right: auto;
+    margin-left: auto;
+    float: left;
+  }
+  .navbar {
+    width: auto;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 0px;
+  }
+
+}
