@@ -10,7 +10,7 @@ handlers:
   upload: favicon\.ico
 
 - url: .*
-  script: q.app
+  script: _q.app
 
 libraries:
 - name: webapp2
