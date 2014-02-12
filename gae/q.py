@@ -14,11 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
+import urllib
+
+from google.appengine.api import users
+from google.appengine.ext import ndb
+
+import jinja2
 import webapp2
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+        extensions=['jinja2.ext.autoescape'],
+        autoescape=True)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('ello world!')
+        self.response.write('ello woorld!')
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
