@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <body>
+    {% for question in questions %}
+      {% if question.author %}
+        <b>{{ question.author.nickname() }}</b> asked:
+      {% else %}
+        An anonymous person asked:
+      {% endif %}
+        <blockquote>{{ question.content }}</blockquote>
+    {% endfor %}
+    <form action="/sign?question_name={{ question_name }}" method="post">
+      <div><textarea name="content" rows="3" cols="60"></textarea></div>
+      <div><input type="submit" value="Sign Guestbook"></div>
+    </form>
+
+    <hr>
+
+    <form>Question name:
+      <input value="{{ question_name }}" name="question_name">
+      <input type="submit" value="switch">
+    </form>
+    
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+  </body>
+</html>
+{% endautoescape %}
