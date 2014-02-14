@@ -40,7 +40,7 @@ class MainPage(webapp2.RequestHandler):
 
             question.content = "VERSACE"
             question.put()
-            query_params = {'question_name': question_name}
+            #query_params = {'question_name': question_name}
             #self.redirect('/?' + urllib.urlencode(query_params)}
 
     def get(self):
@@ -51,23 +51,25 @@ class MainPage(webapp2.RequestHandler):
                 ancestor=question_key(question_name)).order(-Question.date)
 
         questions = questions_query.fetch(3)
-        #questions = 'mane'
+
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
+            template = JINJA_ENVIRONMENT.get_template('index.html')
 
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
+            template = JINJA_ENVIRONMENT.get_template('login.html')
 
         template_values = {
                 'questions': questions,
-                'question_name': 'gucci mane',# self.get_name_from_email(question_name),
+                'question_name': type(questions),
                 'url': url,
                 'url_linktext': url_linktext,
         }
 
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        #template = JINJA_ENVIRONMENT.get_template('login.html')
         self.response.write(template.render(template_values))
 
     def get_name_from_email(self, email):

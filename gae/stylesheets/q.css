@@ -17,7 +17,11 @@
     font-family: 'Open Sans', sans-serif;
   }
   .question {
-    background-color: #111;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #111125;
+    box-shadow: 0 0 4px 4px #eee;
+    margin: 10px 0px 10px 0px;
   }
   h1 {
     display: block;

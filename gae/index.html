@@ -16,13 +16,12 @@
     if (/mobile/i.test(navigator.userAgen)) document.documentElement.className += ' w-mobile';
   </script>
   <link rel="stylesheet" type="text/css" href="/stylesheets/normalize.css">
-
   <body>
-    <h1>Q</h1> 
+    <h1>Queue</h1> 
     {% for question in questions %}
       <div class="question">
       {% if question.author %}
-        <b>{{ question.author.nickname() }}</b> asked:
+        <b>{{ question.nickname }}</b> asked:
       {% else %}
         An anonymous person asked:
       {% endif %}

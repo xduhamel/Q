@@ -1,4 +1,4 @@
-@media (max-width: 479px) {
+@media (max-width: 1000px) {
   body {
     font-weight: 400;
     text-align: center;
@@ -14,36 +14,15 @@
     box-shadow: #ccc 0px 1px 6px 0px;
     font-family:'Open Sans', sans-serif;
     color: #111125;
-    font-size: 16px;
-    font-weight: 100;
+    font-size: 69px;
+    font-weight: 200;
     text-align: center;
     height: 30px;
   }
-  .login-text {
-      position: absolute;
-      left: 200px;
-      top: 100px;
-      font-family: 'Open Sans', sans-serif;
-      color: #111125;
-      font-size: 18px;
-      font-weight: 10; 
-      text-align: center;
-      height: 30px; 
-  }
   .button {
     position: absolute;
-    width: 800px;
-    height: 100px;
-    background-color: white;
-    box-shadow: #ccc 0px 1px 6px 0px;
-    font-family:'Open Sans', sans-serif;
-    color: #111125;
-    font-size: 18px;
-    font-weight: 100;
-  }
-  .login {
-    height: 40px;
-    width: 10px; 
+    height: 80px;
+    width: 100px; 
     margin-right: 0px;
     margin-left: 0px;
     padding-bottom: 19px;
