@@ -21,7 +21,7 @@
     {% for question in questions %}
       <div class="question">
       {% if question.author %}
-        <b>{{ question.nickname }}</b> asked:
+        <b>{{ question.author }}</b> asked:
       {% else %}
         An anonymous person asked:
       {% endif %}
