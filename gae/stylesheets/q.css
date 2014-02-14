@@ -1,62 +1,27 @@
-body {
-  font-family: Arial, sans-serif;
-  color: #333;
-  font-size: 14px;
-  line-height: 20px;
-
-}
-h1 {
-  margin: 10px 0px;
-  font-size: 38px;
-  line-height: 44px;
-  font-weight: 700;
-
-}
-h2 {
-  margin: 10px 0px;
-  font-size: 32px;
-  line-height: 36px;
-  font-weight: 700;
-}
-h3 {
-  margin: 10px 0px;
-  font-size: 24px;
-  line-height: 30px;
-  font-weight: 700;
-}
-h4 {
-  margin: 10px 0px;
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 700;
-}
-h5 {
-  margin: 10px 0px;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-}
-h6 {
-  margin: 10px 0px;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 700;
-}
-p {
-  margin-bottom: 5px;
-}
-.button {
-  display: inline-block;
-  padding: 0px 15px;
-  background-color: black;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-}
 @media (max-width: 479px) {
+  input {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #111125;
+    box-shadow: 0 0 4px 4px #eee;
+    margin: 0 0 10px 0; 
+    height: 30px; 
+    float: left; 
+    font-weight: bold;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px; 
+  }
   body {
     font-weight: 400;
     text-align: center;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .question {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #111125;
+    box-shadow: 0 0 4px 4px #eee;
+    margin: 10px 0px 10px 0px;
   }
   h1 {
     display: block;
@@ -66,7 +31,6 @@ p {
     padding-right: 1px;
     padding-left: 1px;
     float: none;
-    font-family:'Open Sans', sans-serif;
     color: #111125;
     font-weight: 100;
     text-align: center;
@@ -106,7 +70,27 @@ p {
   .header {
     background-color: #111125;
   }
-.button.classbutton {
+  .standardButton {
+      background-color: #fff;
+      text-align: center;
+      color: #000;
+      width: 170px;
+      height: 40px; 
+      float: left;
+      padding: 8px 0px 9px 0px;;
+  }
+  .logoutButton {
+      background-color: #fff;
+      border-color: #000;
+      border-radius: 3px; 
+      color: #333;
+      box-shadow: 3px 0 0 #ccc;
+      width: 100px; 
+      height: 20px; 
+      float: right;
+      padding: 8px 0 8px 0;
+  }
+  .button.classbutton {
     margin-top: 3px;
     margin-right: 0px;
     margin-bottom: 9px;
@@ -147,7 +131,7 @@ p {
 a:link{
   color:black;
 }
-
+  {
   font-family:'Open Sans', sans-serif;
   }
   .button {
@@ -156,11 +140,11 @@ a:link{
     padding-right: 0px;
     padding-left: 0px;
     text-align: center;
+    width: 200px;
   }
   .q1 {
     border: 1px solid white;
     background-color: #efefef;
-    box-shadow: black 1px 1px 3px 0px, white 0px 0px 6px 0px, rgba(255, 255, 255, 0.49) 0px 1px 0px 0px inset, black 0px 0px 8px 0px inset, black 1px 1px 3px 0px, white 0px 0px 6px 0px, black 1px 1px 3px 0px;
     opacity: 0.25;
   }
   .title1 {

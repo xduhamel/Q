@@ -1,0 +1,39 @@
+@media (max-width: 1000px) {
+  body {
+    font-weight: 400;
+    text-align: center;
+  }
+  h1 {
+    display: block;
+    margin-top: 24px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 1px;
+    padding-left: 1px;
+    float: none;
+    box-shadow: #ccc 0px 1px 6px 0px;
+    font-family:'Open Sans', sans-serif;
+    color: #111125;
+    font-size: 69px;
+    font-weight: 200;
+    text-align: center;
+    height: 30px;
+  }
+  .button {
+    position: absolute;
+    height: 80px;
+    width: 100px; 
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-bottom: 19px;
+    padding-left: 0px;
+    font-family:'Open Sans', sans-serif;
+    text-align: left;
+  }
+  .submitbutton {
+    float: right;
+  }
+  .header {
+    background-color: #111125;
+  }
+}
