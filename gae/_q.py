@@ -36,7 +36,7 @@ class MainPage(webapp2.RequestHandler):
         questions_query = Question.query(
                 ancestor=question_key(question_name)).order(-Question.date)
 
-        questions = questions_query.fetch(10)
+        questions = questions_query.fetch(1)
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
