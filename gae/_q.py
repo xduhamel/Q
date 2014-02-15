@@ -29,20 +29,6 @@ class Question(ndb.Model):
 
 class MainPage(webapp2.RequestHandler):
 
-    #temp
-    def populate_q(self):
-        for i in range(5):
-            question_name = DEFAULT_NAME
-            question = Question(parent=question_key(question_name))
-
-            if users.get_current_user():
-                question.author = users.get_current_user()
-
-            question.content = "VERSACE"
-            question.put()
-            #query_params = {'question_name': question_name}
-            #self.redirect('/?' + urllib.urlencode(query_params)}
-
     def get(self):
         #self.populate_q()
         question_name = self.request.get('question_name', DEFAULT_NAME)
@@ -50,7 +36,7 @@ class MainPage(webapp2.RequestHandler):
         questions_query = Question.query(
                 ancestor=question_key(question_name)).order(-Question.date)
 
-        questions = questions_query.fetch(3)
+        questions = questions_query.fetch(10)
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
