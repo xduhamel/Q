@@ -7,6 +7,10 @@ threadsafe: yes
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+- url: /js
+  static_dir: js
+- url: /bootstrap
+  static_dir: bootstrap 
 
 - url: .*
   script: _q.app
