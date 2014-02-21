@@ -18,27 +18,57 @@
     if (/mobile/i.test(navigator.userAgent)) document.documentElement.className += ' w-mobile';
   </script>
   <div class="header">
-    <a class="back-button" href="/">Back</a>
-    <h1>{{ question_name }}</h1>
+    <a class="back-button" href="/schedule">Back</a>
+    <h1>Q.</h1>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
     {% for question in questions %}
-      <div class="question">
-        <div class="generic_tag" id= {{ name_color }}> {{ author_initial }} </div>
-        {% if question.author %}
-          <div class="author_name"> {{ question.author }} </div>
-        {% endif %}
-        {% if question_time %}
-        <div class="question-time"> {{ question_time }} </div>
-        {% endif %}
-        <blockquote> {{ question.content }} </blockquote>
-      </div>
+      {% if not question.answered %}
+        <div class="question">
+          {% if not current_user %}
+            <div class="generic_tag" id="gray">{{ question.tally }}</div>
+          {% elif not question.done %}
+            <div class="generic_tag" id="red">{{ question.tally }}</div>
+          {% else %}
+            <div class="generic_tag" id="green">{{ question.tally }}</div>
+          {% endif %}
+          {% if current_user %}
+            <div class="remove-button">
+              <form action="/remove/{{ question_name }}+{{ question.q_id }}" method="post">
+                <input class="thug" type="submit" value="X"/>
+              </form>
+            </div>
+          {% endif %}
+          {% if question.author %}
+            <div class="author_name"> {{ question.author }} </div>
+          {% endif %}
+          {% if question_time %}
+          <div class="question-time"> {{ question.date }} </div>
+          {% endif %}
+          <blockquote> {{ question.content }} </blockquote>
+          {% if current_user %}
+            <div class="join-question-button">
+              <form action="/join/{{ question_name }}+{{ question.q_id }}" method="post">
+                {% if not question.done %}
+                  <input class="thug" type="submit" value="Join Question"/>
+                {% else %}
+                  <input class="thug" type="submit" value="Leave Question"/>
+                {% endif %}
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
     {% endfor %}
-    <form action="/sign?question_name={{ question_name }}" method="post">
+    {% if current_user %}
+    <form action="/ask/{{ question_name }}" method="post">
       <div><textarea name="content" rows="3" cols="40"></textarea></div>
-      <div><input type="submit" class="standardButton" value="New Question"></div>
+      <div><input type="submit" class="standardButton" value="New Question"/></div>
     </form>
+    {% else %}
+      <div class=""> Login to ask a question! </div>
+    {% endif %}
   </body>
 </html>
 {% endautoescape %}

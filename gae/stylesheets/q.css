@@ -15,7 +15,8 @@
     text-decoration:none;
     color: #f1f1f1;
   }
-  input {
+  /*
+    input {
     border: 1px solid #ccc;
     background-color: #fff;
     color: #111125;
@@ -27,11 +28,19 @@
     font-family: 'Open Sans', sans-serif;
     font-size: 14px; 
   }
+  */
   body {
     font-weight: 200;
     text-align: center;
     font-family: 'Open Sans', sans-serif;
     background-color: #f1f1f1;
+  }
+  .thug {
+    border: 0px solid white;
+    background-color: transparent;
+    color: #f1f1f1;
+    font-size: 14px;
+    font-weight: 100;
   }
   .question {
     background-color: #fff;
@@ -50,26 +59,62 @@
     border-radius: 3px;
     height: 270px;
   }
+  .remove-button {
+    border: 2px;
+    background-color: #111125;
+    border-radius: 3px; 
+    border: 0px solid black;
+    position: absolute;
+    margin-top: -55px;
+    margin-left: 79%;
+    line-height: 20px;
+    line-
+  }
+  .class-container {
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    color: #2e2e2e;
+    box-shadow: 0 0 4px 4px #e6e6e6;
+    border-radius: 3px;
+    height: 180px;
+    margin: 10px 0 10px 0;
+  }
   .oh-label {
     font-weight: 400;
     text-decoration: underline;
     font-size: 18px;
   }
-  .join-button {
-    height: 50px; 
-    background-color: #00bad8;
-    border-bottom-left-radius: 3px; 
-    border-bottom-right-radius: 3px;
-    margin-top: 55px;
+  .view-class-button {
+    background-color: #111124;
+    border: 0px solid blue;
+    border-radius: 3px;
+    color: #f1f1f1;
+    width: 70%;
+    left: 15%;
+    height: 50px;
+    margin: 10px auto 0 auto;
+    box-shadow: 0 0 4px 4px #e1e1e1;
     line-height: 50px;
-    box-shadow: inset 0 0 10px #777;
   }
-  .join-oh-button{
+  .join-oh-button {
     background-color: #111124;
     border: 0px solid blue;
     border-radius: 3px;
     color: #f1f1f1;
     width: 40%;
+    left: 15%;
+    height: 50px;
+    margin: 10px auto 0 auto;
+    box-shadow: 0 0 4px 4px #e1e1e1;
+    line-height: 50px;
+  }
+  .join-question-button {
+    background-color: #111124;
+    border: 0px solid blue;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: #f1f1f1;
+    width: 100%;
     left: 15%;
     height: 50px;
     margin: 10px auto 0 auto;
