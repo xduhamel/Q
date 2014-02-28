@@ -10,10 +10,23 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-- kind: Question
+- kind: Class
+  properties:
+  - name: valid_class
+  - name: creation_time
+    direction: desc
+
+- kind: Class
   ancestor: yes
   properties:
+  - name: creation_time
+    direction: desc
+
+- kind: OfficeHours
+  properties:
+  - name: class_name
   - name: date
+    direction: desc
 
 - kind: Question
   ancestor: yes
