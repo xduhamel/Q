@@ -386,7 +386,7 @@ class PostProblem(webapp2.RequestHandler):
         question.answered = False
         question.done = False
         question.tally = 1
-        question.students = json.dumps([question.author.user_id()])
+        question.students = [question.author.user_id()]
         question.put()
 
         query_params = {'question_name': question_name}
@@ -463,7 +463,6 @@ class JoinQuestion(webapp2.RequestHandler):
             other_students = current_question.students
             
             if joiner.user_id() in other_students: 
-                logging.info('yuuuuup!')
                 current_question.done = None
                 other_students.remove(joiner.user_id())
                 current_question.tally -= 1
@@ -476,11 +475,6 @@ class JoinQuestion(webapp2.RequestHandler):
                 current_question.done = True
 
             current_question.put()
-
-            #logging.info(json.loads(current_question.students))
- 
-            current_question.put()
-
 
 
         """
@@ -501,56 +495,47 @@ class JoinQuestion(webapp2.RequestHandler):
         self.redirect('/q/' + question_name)
 
 
-class JoinClassAsStudent(webapp2.RequestHandler):
+class JoinClass(webapp2.RequestHandler):
 
     def post(self, arg):
 
         class_name = arg
 
         class_query = Class.query(Class.title == class_name)
-        class_query.filter(ndb.GenericProperty('class_title') == class_name)
-        classes = class_query.fetch()
-
+        class_ = class_query.fetch()
         current_user = users.get_current_user()
 
-        for class_ in classes:
-            if class_.title == class_name:
+        if class_:
+            current_class = class_[0]
+            students_query = Student.query(Student.user == current_user)
+            result = students_query.fetch()
 
-                students_query = Student.query(Student.user == current_user)
-                result = students_query.fetch()
+            if not result:
+                new_student = Student()
+                new_student.user = current_user
+                new_student.classes = json.dumps([class_.title])
+                new_student.put()
 
-                if not result:
-                    new_student = Student()
-                    new_student.user = current_user
-                    new_student.classes = json.dumps([class_.title])
-                    new_student.put()
+            else:
+                current_student = result[0]
+                if current_student.classes is None:
+                    current_student.classes = [current_class.title]
 
                 else:
-                    current_student = result[0]
-                    if current_student.classes is None:
-                        current_student.classes = json.dumps([class_.title])
+                    current_classes = current_student.classes
+                    
+                    if current_class.title not in current_classes:
+                        current_classes.append(current_class.title)
+                        current_student.classes = current_classes
 
-                    else:
-                        current_classes = json.loads(current_student.classes)
-                        if class_.title not in current_classes:
-                            current_classes.append(class_.title)
-                            current_student.classes = json.dumps(current_classes)
+            if result is None:
+                current_class.students = [result]
 
-                    current_student.put()
+            elif current_user.user_id() not in result:
+                result.append(current_user.user_id())
+                current_class.students = result
 
-                students = json.loads(class_.students)
-
-                if students is None:
-                    class_.students = json.dumps([students])
-
-                elif current_user.user_id() not in students:
-                    logging.info(students)
-                    logging.info(type(students))
-                    logging.info('*************')
-                    students.append(current_user.user_id())
-                    class_.students = json.dumps(students)
-
-            class_.put()
+            current_class.put()
 
         self.redirect('/')
 
@@ -696,7 +681,7 @@ app = webapp2.WSGIApplication([
     (r'/q/([^/]+)', QPage),
     (r'/alt_q/([^/]+)', AltQPage),
     (r'/join_question/([^/]+)', JoinQuestion),
-    (r'/join_class/([^/]+)', JoinClassAsStudent), 
+    (r'/join_class/([^/]+)', JoinClass), 
     (r'/join_as_ta/([^/]+)', JoinClassAsTA),
     (r'/remove/([^/]+)', Remove),
     (r'/remove_class/([^/]+)', RemoveClass),
