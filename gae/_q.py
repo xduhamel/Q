@@ -645,8 +645,12 @@ class _JoinClassAsTA(webapp2.RequestHandler):
 class Remove(webapp2.RequestHandler):
 
     def post(self, arg):
-        question_name = arg.split('+')[0]
-        question_id = arg.split('+')[1]
+
+        logging.info(arg)
+        logging.info('*********')
+        question_name = arg.split('|')[0]
+        question_id = arg.split('|')[1]
+        logging.info(question_id)
 
         questions_query = Question.query(ancestor=question_key(question_name)).order(-Question.date)
         questions = questions_query.fetch()
