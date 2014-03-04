@@ -243,7 +243,7 @@ class QPage(webapp2.RequestHandler):
         link_name = queue.split('+')[1]
 
         question_name = queue
-        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
+        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.tally)  # HERE ---------
         questions = questions_query.fetch()
 
         current_user = users.get_current_user()
@@ -251,15 +251,37 @@ class QPage(webapp2.RequestHandler):
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
-            current_user = True
+            is_current_user = True
 
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
-            current_user = False
+            is_current_user = False
 
         for question in questions:
-            question.color = get_random_color()
+            if not question.students:
+                question.students = []
+
+            if current_user.user_id() in question.students:
+                question.done = True
+
+            else:
+                question.done = False
+
+            if question.tally == 0:
+                question.answered = True
+                question.removable = True 
+
+            elif question.tally == 1 and question.author.user_id() == current_user.user_id():
+                logging.info(question.author.user_id())
+                logging.info(current_user.user_id())
+                logging.info('asdhfsdfasdh')
+                question.removable = True
+
+            else:
+                question.removable = False
+
+
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         template_values = {
@@ -267,11 +289,11 @@ class QPage(webapp2.RequestHandler):
                 'class_name': class_name, 
                 'questions': questions,
                 'question_name': question_name,
-                'removable': True,
                 'url_linktext': url_linktext,
+                'removable': True,
                 'name_tag': 'generic_tag',
                 'question_time': DEFAULT_TIME,
-                'current_user': current_user,
+                'current_user': is_current_user,
         }
 
         self.response.write(template.render(template_values))
@@ -384,7 +406,7 @@ class PostProblem(webapp2.RequestHandler):
         question.content = self.request.get('content')
         question.q_id = self.get_question_id(question.author)
         question.answered = False
-        question.done = False
+        question.done = True
         question.tally = 1
         question.students = [question.author.user_id()]
         question.put()
