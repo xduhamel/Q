@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
+  <!--<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Open Sans:300,400,600, 700, 800"]
+      }
+    });
+  </script>
+  <body>
+    <div class="sticky-header">
+      <a class="back-button-header" href="/">
+        Back
+      </a>
+      <h2 class="page-title"> {{ class_name }} </h2>
+      <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    </div>
+    <div class="header-margin"> . </div>
+    {% for oh in office_hours %}
+      <div class="oh-container">
+        <h2>{{ oh.first_name }} {{ oh.last_name }}'s Office Hours</h2>
+        <div> {{oh.day}}, {{oh.start_time}} - {{oh.end_time}} </div>
+        <div> {{ oh.location }} </div>
+        {% if not oh.attending_count %}
+          <div> Be the first to attend! </div>
+        {% else %}
+          <div> {{ oh.attending_count }} students attending</div>
+        {% endif %}
+        <div class="join-as-ta-button"><a href="/q/{{ class_name }}">Join as TA</a></div>
+        <div class="join-as-student-button"><a href="/q/{{ class_name }}">Join as Student</a></div>
+      </div>
+    {% endfor %}
+    <div class="add-oh-button">
+      <a href="/new_oh/{{ class_name }}">Add Office Hours</a>
+    </div>
+  </body>
+</html>
+{% endautoescape %}
