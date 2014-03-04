@@ -239,6 +239,8 @@ class QPage(webapp2.RequestHandler):
 
     def get(self, queue):
 
+        class_name = queue.split('+')[0]
+
         question_name = queue
         questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
         questions = questions_query.fetch()
@@ -258,10 +260,10 @@ class QPage(webapp2.RequestHandler):
         for question in questions:
             question.color = get_random_color()
 
-        template = JINJA_ENVIRONMENT.get_template('index2.html')
+        template = JINJA_ENVIRONMENT.get_template('index.html')
         template_values = {
                 'url': url,
-                'class_name': queue, 
+                'class_name': class_name, 
                 'questions': questions,
                 'question_name': question_name,
                 'removable': True,

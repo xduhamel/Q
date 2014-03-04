@@ -27,14 +27,14 @@
     {% for oh in office_hours %}
       <div class="oh-container">
         <h2>{{ oh.first_name }} {{ oh.last_name }}'s Office Hours</h2>
-        <div> {{oh.day}}, {{oh.start_time}} - {{oh.end_time}} </div>
+        <div> {{ oh.day }}, {{ oh.start_time }} - {{ oh.end_time }} </div>
         <div> {{ oh.location }} </div>
         {% if not oh.attending_count %}
           <div> Be the first to attend! </div>
         {% else %}
           <div> {{ oh.attending_count }} students attending</div>
         {% endif %}
-        <div class="join-oh-button"><a href="/q/{{ class_name }}{{ oh.first_name }}{{ oh.last_name }}">Join Office Hours</a></div>
+        <div class="join-oh-button"><a href="/q/{{ class_name }}+{{ oh.first_name }}">Join Office Hours</a></div>
       </div>
     {% endfor %}
     <div class="add-oh-button">
