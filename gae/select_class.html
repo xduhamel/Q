@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
+  <!--<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Open Sans:300,400,600, 700, 800"]
+      }
+    });
+  </script>
+  <div class="sticky-header">
+    <h2 class="page-title"> Office Hours </h2>
+    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+  </div>
+  <body>
+    <div class="header-margin"></div>
+    {% for class in classes %}
+    <div class="class-container">
+      <h2 class="course-title">{{ class }}</h2>
+      <div class="remove-button">
+        <form action="/remove_class/{{ class }}" method="post">
+          <input class="thug" type="submit" value="X"/>
+        </form>
+      </div>
+      <div class="view-class-button">
+        <a href="/schedule/{{ class }}">View Office Hours Schedule</a>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="join-class-button">
+      <a class="back-button" href="/join">Add a Class</a>
+    </div>
+  </body>
+</html>
+{% endautoescape %}

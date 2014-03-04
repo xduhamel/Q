@@ -22,6 +22,13 @@ indexes:
   - name: creation_time
     direction: desc
 
+- kind: Class
+  ancestor: yes
+  properties:
+  - name: valid_class
+  - name: creation_time
+    direction: desc
+
 - kind: OfficeHours
   properties:
   - name: class_name

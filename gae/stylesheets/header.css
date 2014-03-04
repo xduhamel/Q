@@ -1,0 +1,35 @@
+@media (max-width: 500px) {
+    .sticky-header {
+        top: 0;
+        width: 110%;
+        height: 65px;
+        line-height: 50px;
+        background-color: #111125;
+        margin-top: -25px;
+        margin-left: -5%;
+        opacity: .95;
+        position: fixed;
+        z-index: 4;
+        opacity: .9;
+        box-shadow: 0 0 4px 4px #d1d1d1;
+    }
+    .content {
+        margin-top: 40px;
+    }
+    .header-spacing {
+        position:absolute;
+        top: 0px;
+        height: 100px;
+        widht: 100%;
+        background: transparent;
+        border: 0px solid #000;
+    }
+    .page-title {
+        color: #f1f1f1;
+    }
+    .login-button {
+        position: fixed;
+        margin-top: -70px;
+        margin-left: 100px;
+    }
+}

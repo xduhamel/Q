@@ -13,7 +13,7 @@
     float: none;
     box-shadow: #ccc 0px 1px 6px 0px;
     font-family:'Open Sans', sans-serif;
-    color: #111125;
+    color: #1111254;
     font-size: 120px;
     font-weight: 200;
     text-align: center;
@@ -35,6 +35,6 @@
     float: right;
   }
   .header {
-    background-color: #111125;
+    background-color: #1111254;
   }
 }

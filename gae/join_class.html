@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
+  <!--<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  -->
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Open Sans:300,400,600, 700, 800"]
+      }
+    });
+  </script>
+  <div class="sticky-header">
+    <a class="back-button-header" href="/">
+      <span class="add-on"><i class="icon-chevron-left icon-white"></i></span> 
+    </a>
+    <h2 class="page-title"> Add a Class </h2>
+    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+  </div>
+  <body>
+    <div class="header-margin"></div>
+    <div class="create-class-button">
+      <a class="back-button" href="/new_class">Create a Class</a>
+    </div>
+    {% for class in classes %}
+      <div class="new-class-container">
+        <div class="remove-class-button">
+          <form action="/delete_class/{{ class.title }}" method="post">
+            <input class="thug" type="submit" value="X"/>
+          </form>
+        </div>
+        <div class="class-title"> {{ class.title }} </div>
+        <div class="join-class-button">
+          <form action="/join_class/{{ class.title }}" method="post">
+            <div class="back-button" >
+              <input type="submit" class="post-question" value="Add Class"/>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </body>
+</html>
+{% endautoescape %}

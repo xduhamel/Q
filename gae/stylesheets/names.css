@@ -1,0 +1,23 @@
+@media (max-width: 500px) {
+  #blue {
+    background-color: #22bfef;
+  }
+  #yellow {
+    background-color: #fff;
+  }
+  #orange {
+    background-color: #ffb226;
+  }
+  #red {
+    background-color: #ff4a75;
+  }
+  #purple {
+    background-color: #ec67dc;
+  }
+  #green {
+    background-color: #1ac922;
+  }
+  #gray {
+    background-color: #3f3f3f;
+  }
+}

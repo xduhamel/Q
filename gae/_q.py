@@ -7,13 +7,12 @@ import urllib
 import jinja2
 import webapp2
 import json
+import time
 
 from random import randint
-
-import time
 from datetime import datetime
-import wsgiref.handlers
 
+import wsgiref.handlers
 import logging
 
 from google.appengine.api import users
@@ -208,7 +207,7 @@ class JoinClassPage(webapp2.RequestHandler):
     def get(self):
 
         all_classes = DEFAULT_CLASS
-        class_query = Class.query(ancestor=class_key(all_classes)).order(-Class.creation_time)
+        class_query = Class.query(Class.valid_class == True, ancestor=class_key(all_classes)).order(-Class.creation_time)
         classes = class_query.fetch()
 
         for class_ in classes:
@@ -246,11 +245,6 @@ class QPage(webapp2.RequestHandler):
 
         current_user = users.get_current_user()
 
-        if current_user.email() == 'mttdhml@gmail.com':
-            removable = True
-        else:
-            removable = False
-
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -266,11 +260,11 @@ class QPage(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         template_values = {
+                'url': url,
                 'class_name': queue, 
                 'questions': questions,
                 'question_name': question_name,
-                'removable': removable,
-                'url': url,
+                'removable': True,
                 'url_linktext': url_linktext,
                 'name_tag': 'generic_tag',
                 'question_time': DEFAULT_TIME,
@@ -362,6 +356,17 @@ class NewOfficeHours(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
+
+class Map(webapp2.RequestHandler):
+
+    def get(self):
+
+        template = JINJA_ENVIRONMENT.get_template('map.html')
+        template_values = {
+            'class_name': 'maps',
+        }  
+
+        self.response.write(template.render(template_values))
 
 class PostProblem(webapp2.RequestHandler):
 
@@ -520,6 +525,56 @@ class JoinClassAsStudent(webapp2.RequestHandler):
 
 class JoinClassAsTA(webapp2.RequestHandler):
 
+    def post(self, arg):
+
+        class_name = arg
+
+        class_query = Class.query(Class.title == class_name)
+        class_query.filter(ndb.GenericProperty('class_title') == class_name)
+        classes = class_query.fetch()
+
+        current_user = users.get_current_user()
+
+        for class_ in classes:
+            if class_.title == class_name:
+
+                students_query = Student.query(Student.user == current_user)
+                result = students_query.fetch()
+
+                if not result:
+                    new_student = Student()
+                    new_student.user = current_user
+                    new_student.classes = json.dumps([class_.title])
+                    new_student.put()
+
+                else:
+                    current_student = result[0]
+                    if current_student.classes is None:
+                        current_student.classes = json.dumps([class_.title])
+
+                    else:
+                        current_classes = json.loads(current_student.classes)
+                        if class_.title not in current_classes:
+                            current_classes.append(class_.title)
+                            current_student.classes = json.dumps(current_classes)
+
+                    current_student.put()
+
+                students = json.loads(class_.students)
+
+                if students is None:
+                    class_.students = json.dumps([students])
+
+                elif current_user.user_id() not in students:
+                    students.append(current_user.user_id())
+                    class_.students = json.dumps(students)
+
+            class_.put()
+
+        self.redirect('/')
+
+class _JoinClassAsTA(webapp2.RequestHandler):
+
     """ TODO """
 
     def post(self, arg):
@@ -578,9 +633,7 @@ class RemoveClass(webapp2.RequestHandler):
                 current_student.classes = json.dumps(current_classes)
                 current_student.put()
 
-            else:
-                logging.info(current_classes)
-                logging.info('*************')
+            #TODO
 
         self.redirect('/')
 
@@ -594,7 +647,7 @@ class DeleteClass(webapp2.RequestHandler):
 
         if classes:
             class_ = classes[0]
-            class_.title = None
+            class_.valid_class = False  
             class_.put()
 
         else:
@@ -612,7 +665,7 @@ app = webapp2.WSGIApplication([
     (r'/alt_q/([^/]+)', AltQPage),
     (r'/join_question/([^/]+)', JoinQuestion),
     (r'/join_class/([^/]+)', JoinClassAsStudent), 
-    (r'/become_ta/([^/]+)', JoinClassAsTA),
+    (r'/join_as_ta/([^/]+)', JoinClassAsTA),
     (r'/remove/([^/]+)', Remove),
     (r'/remove_class/([^/]+)', RemoveClass),
     (r'/delete_class/([^/]+)', DeleteClass),
@@ -622,4 +675,5 @@ app = webapp2.WSGIApplication([
     (r'/ask/([^/]+)', PostProblem),
     (r'/create_class/([^/]+)', CreateClass),
     (r'/create_oh/([^/]+)', CreateOfficeHours),
+    (r'/map', Map),
 ], debug=True)

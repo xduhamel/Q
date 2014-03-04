@@ -18,12 +18,17 @@
     if (/mobile/i.test(navigator.userAgent)) document.documentElement.className += ' w-mobile';
   </script>
   <div class="sticky-header">
-    <a class="back-button-header" href="/schedule/{{ class_name }}">Back</a>
+    <a class="back-button-header" href="/schedule/{{ class_name }}">
+      <span class="add-on"><i class="icon-chevron-left icon-white"></i></span> 
+    </a>
     <h2 class="page-title">Q.</h2>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
     <div class="header-margin"></div>
+    {% if not questions %}
+      <div> Be the first to ask a question! </div>
+    {% endif %}
     {% for question in questions %}
       {% if not question.answered %}
         <div class="question">

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
+  <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Open Sans:300,400,600, 700, 800"]
+      }
+    });
+  </script>
+  <div class="sticky-header">
+    <a class="back-button-header" href="/">Cancel</a>
+    <h2 class="page-title"> Add a Class </h2>
+    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+  </div>
+  <body>
+    <div class="header-margin"></div>
+    <div class="new-question-container">
+      <form action="/create_class/{{ class_name }} " method="post">
+        <div class="new-title">Class Title</div>
+        <div>
+          <textarea name="title" rows="1" cols="40"></textarea>
+        </div>
+        <div class="teacher">Who teaches this class?</div>
+        <div>
+          <textarea name="teacher" rows="1" cols="40"></textarea>
+        </div>
+        <div class='submit-class-button'>
+          <input type="submit" class="post-question" value="Create Class"/>
+        </div>
+      </form>
+    </div>
+    {% include "nav_bar.html" %}
+  </body>
+</html>
+{% endautoescape %}
