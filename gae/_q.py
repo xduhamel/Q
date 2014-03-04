@@ -242,7 +242,7 @@ class QPage(webapp2.RequestHandler):
         class_name = queue.split('+')[0]
 
         question_name = queue
-        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
+        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.students)  # HERE ---------
         questions = questions_query.fetch()
 
         current_user = users.get_current_user()
@@ -281,7 +281,7 @@ class AltQPage(webapp2.RequestHandler):
     def get(self, queue):
 
         question_name = queue
-        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
+        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.students)  # HERE ---------
         questions = questions_query.fetch()
 
         current_user = users.get_current_user()
@@ -383,7 +383,7 @@ class PostProblem(webapp2.RequestHandler):
         question.content = self.request.get('content')
         question.q_id = self.get_question_id(question.author)
         question.answered = False
-        question.done = False
+        question.done = True
         question.tally = 1
         question.put()
 
@@ -452,7 +452,7 @@ class JoinQuestion(webapp2.RequestHandler):
         if users.get_current_user():
             joiner = users.get_current_user()
 
-        questions_query = Question.query(ancestor=question_key(question_name)).order(-Question.date)
+        questions_query = Question.query(ancestor=question_key(question_name)).order(-Question.students)
         questions = questions_query.fetch()
 
         for question in questions:
