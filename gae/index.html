@@ -31,7 +31,14 @@
     {% endif %}
     {% for question in questions %}
       {% if not question.answered %}
-        <div class="question">
+        {% if not question.done %}
+		 <div class="question" id="nonMember">
+		 {%else%}
+		 <div class="question" id="Member">
+
+		 {% endif %}
+		 
+		 
           <div class="generic_tag" id="gray">{{ question.tally }}</div>
           {% if current_user %}
             {% if removable %}

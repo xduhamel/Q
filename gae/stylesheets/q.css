@@ -75,6 +75,16 @@
     margin: 10px 0px 10px 0px;
     border-radius: 4px;
   }
+  
+  #Member{
+  	border: solid;
+  	border-color: green;
+  }
+  
+  #nonMember{
+ 	 border: none;
+ }
+   
   .oh-container {
     background-color: #fff;
     border: 1px solid #e2e2e2;
