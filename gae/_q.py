@@ -240,6 +240,7 @@ class QPage(webapp2.RequestHandler):
     def get(self, queue):
 
         class_name = queue.split('+')[0]
+        link_name = queue.split('+')[1]
 
         question_name = queue
         questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
@@ -385,6 +386,7 @@ class PostProblem(webapp2.RequestHandler):
         question.answered = False
         question.done = False
         question.tally = 1
+        question.students = json.dumps([question.author.user_id()])
         question.put()
 
         query_params = {'question_name': question_name}
@@ -444,17 +446,44 @@ class JoinQuestion(webapp2.RequestHandler):
 
     def post(self, arg):
 
-        question_name = arg.split('+')[0]
-        question_id = arg.split('+')[1]
+        question_name = arg.split('|')[0]
+        link_name = arg.split('|')[1]
+        question_id = arg.split('|')[2]
 
         question = Question(parent=question_key(question_name))
 
         if users.get_current_user():
             joiner = users.get_current_user()
 
-        questions_query = Question.query(ancestor=question_key(question_name)).order(-Question.date)
+        questions_query = Question.query(Question.q_id == question_id)
         questions = questions_query.fetch()
 
+        if questions:
+            current_question = questions[0]
+            other_students = current_question.students
+            
+            if joiner.user_id() in other_students: 
+                logging.info('yuuuuup!')
+                current_question.done = None
+                other_students.remove(joiner.user_id())
+                current_question.tally -= 1
+                current_question.students = other_students                
+
+            else:
+                other_students.append(joiner.user_id())
+                current_question.students = other_students
+                current_question.tally += 1
+                current_question.done = True
+
+            current_question.put()
+
+            #logging.info(json.loads(current_question.students))
+ 
+            current_question.put()
+
+
+
+        """
         for question in questions:
             if question.q_id == question_id:
                 logging.info(question)
@@ -466,6 +495,7 @@ class JoinQuestion(webapp2.RequestHandler):
                     question.tally += 1
                     question.done = True
                 question.put()
+        """
 
         query_params = {'question_name': question_name}
         self.redirect('/q/' + question_name)

@@ -52,7 +52,7 @@
           <blockquote> {{ question.content }} </blockquote>
           {% if current_user %}
             <div class="join-question-button">
-              <form action="/join_question/{{ question_name }}+{{ question.q_id }}" method="post">
+              <form action="/join_question/{{ question_name }}|{{ link_name }}|{{ question.q_id }}" method="post">
                 {% if not question.done %}
                   <input class="thug" type="submit" value="Join Question"/>
                 {% else %}
