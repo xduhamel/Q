@@ -258,7 +258,7 @@ class QPage(webapp2.RequestHandler):
         for question in questions:
             question.color = get_random_color()
 
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template = JINJA_ENVIRONMENT.get_template('index2.html')
         template_values = {
                 'url': url,
                 'class_name': queue, 
