@@ -262,6 +262,7 @@ class QPage(webapp2.RequestHandler):
         classes = class_query.fetch()
 
         if classes:
+            logging.info('******&&&&*******')
             current_class = classes[0]
             current_tas = current_class.tas
             if not isinstance(current_tas, list):
