@@ -37,9 +37,11 @@
         <div class="join-oh-button"><a href="/q/{{ class_name }}+{{ oh.first_name }}">Join Office Hours</a></div>
       </div>
     {% endfor %}
-    <div class="add-oh-button">
-      <a href="/new_oh/{{ class_name }}">Add Office Hours</a>
-    </div>
+    {% if is_ta %}
+      <div class="add-oh-button">
+        <a href="/new_oh/{{ class_name }}">Add Office Hours</a>
+      </div>
+    {% endif %}
   </body>
 </html>
 {% endautoescape %}

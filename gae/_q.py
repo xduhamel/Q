@@ -141,6 +141,17 @@ class ViewSchedulePage(webapp2.RequestHandler):
         url = users.create_logout_url(self.request.uri)
         url_linktext = 'Logout'
 
+        
+        class_query = Class.query(Class.title == class_name)
+        class_ = class_query.fetch()
+        if class_:
+            current_class = class_[0]
+            current_user = users.get_current_user()
+            if current_user.user_id() in current_class.tas:
+                is_ta = True
+            else:
+                is_ta = False
+
         oh_query = OfficeHours.query(OfficeHours.class_name == class_name) #.order(-OfficeHours.date)
         office_hours = oh_query.fetch()
 
@@ -151,6 +162,7 @@ class ViewSchedulePage(webapp2.RequestHandler):
             'office_hours': office_hours,
             'url': url,
             'url_linktext': url_linktext,
+            'is_ta': is_ta
         }
 
         self.response.write(template.render(template_values))
@@ -705,7 +717,6 @@ class DeleteClass(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     (r'/', MyClassesPage),
-    (r'/schedule', JoinOhPage),
     (r'/schedule/([^/]+)', ViewSchedulePage),
     (r'/join', JoinClassPage),
     (r'/q/([^/]+)', QPage),
