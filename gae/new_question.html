@@ -14,7 +14,7 @@
   </script>
   <div class="sticky-header">
     <a class="back-button-header" href="/">Cancel</a>
-    <h2 class="page-title"> New Question </h2>
+    <h2 class="page-title">New Question</h2>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
@@ -23,9 +23,9 @@
         <form action="/ask/{{ question_name }}" method="post">
         <div class="new-title">Title</div>
         <div>
-          <textarea name="title" rows="1" cols="40"></textarea>
+          <textarea name="title" rows="1" cols="40" required></textarea>
         </div>
-        <div class="new-description">Description</div>
+        <div class="new-description">Problem Description</div>
         <div>
           <textarea name="content" rows="3" cols="40"></textarea>
         </div>
