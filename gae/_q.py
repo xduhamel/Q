@@ -262,23 +262,33 @@ class QPage(webapp2.RequestHandler):
         classes = class_query.fetch()
 
         if classes:
-            logging.info('******&&&&*******')
             current_class = classes[0]
             current_tas = current_class.tas
+
+            current_students = current_class.students
+            if not isinstance(current_students, list):
+                current_students = json.loads(current_students)
+
+            if current_user.user_id() in current_students:
+                is_student = True
+
+            else:
+                is_student = False
+
             if not isinstance(current_tas, list):
                 current_tas = json.loads(current_tas)
 
+            logging.info(current_tas)
+            logging.info(type(json.loads(current_tas[0])))
+            logging.info('-----------')
+            logging.info(current_user.user_id())
+            logging.info(len(current_tas))
+
             if current_user.user_id() in current_tas:
-                logging.info('we have a match')
-                logging.info('******&&&&*******')
-
+                
                 for question in questions:
-                    if question.tally == 0:
-                        question.answered = True
-                        question.removable = True
-
-                    else:
-                        question.removable = True
+                    logging.info('got ya nigga!')
+                    question.removable = True
 
             else:
                 for question in questions:
@@ -313,7 +323,7 @@ class QPage(webapp2.RequestHandler):
                 'removable': True,
                 'name_tag': 'generic_tag',
                 'question_time': DEFAULT_TIME,
-                'current_user': is_current_user,
+                'current_user': is_student,
         }
 
         self.response.write(template.render(template_values))
@@ -454,8 +464,8 @@ class CreateClass(webapp2.RequestHandler):
 
         tas, students = [], []
 
-        class_object.tas = json.dumps(tas)
-        class_object.students = json.dumps(students)
+        class_object.tas = []
+        class_object.students = []
 
         class_object.put()
 
@@ -516,21 +526,6 @@ class JoinQuestion(webapp2.RequestHandler):
                 current_question.done = True
 
             current_question.put()
-
-
-        """
-        for question in questions:
-            if question.q_id == question_id:
-                logging.info(question)
-                if question.done == True:
-                    question.tally -= 1
-                    question.done = None
-
-                else:
-                    question.tally += 1
-                    question.done = True
-                question.put()
-        """
 
         query_params = {'question_name': question_name}
         self.redirect('/q/' + question_name)
@@ -597,7 +592,7 @@ class JoinClassAsTA(webapp2.RequestHandler):
         class_query = Class.query(Class.title == class_name)
         classes = class_query.fetch()
         current_user = users.get_current_user()
-
+        logging.info('&&&&&7&&&&&&&')
         if classes:
             current_class = classes[0]
             students_query = Student.query(Student.user == current_user)
@@ -630,36 +625,16 @@ class JoinClassAsTA(webapp2.RequestHandler):
             if not current_tas:
                 current_class.tas = [current_user.user_id()]
 
-            if not isinstance(current_tas, list):
+            elif not isinstance(current_tas, list):
                 current_tas = json.loads(current_tas)
 
-            elif current_user.user_id() not in current_tas:
+            if current_user.user_id() not in current_tas:
                 current_tas.append(current_user.user_id())
                 current_class.tas = current_tas
 
             current_class.put()
 
         self.redirect('/')
-
-class _JoinClassAsTA(webapp2.RequestHandler):
-
-    """ TODO """
-
-    def post(self, arg):
-
-        class_name = arg
-
-        class_query = Class.query(ancestor=class_key(DEFAULT_CLASS))
-        class_query.filter(ndb.GenericProperty('class_title') == class_name)
-        classes = class_query.fetch()
-
-        current_user = users.get_current_user()
-
-        for class_ in classes:
-            if class_.title == class_name:
-                if class_.students is None:
-                    class_.students = [current_user.user_id()]
-                logging.info(class_.students)
 
 
 class Remove(webapp2.RequestHandler):
