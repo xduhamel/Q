@@ -58,7 +58,6 @@ def question_key(question_name=DEFAULT_NAME):
 def class_key(class_name=DEFAULT_CLASS):
     return ndb.Key('Class', class_name)
 
-
 class Keyword(db.Model):
     keyword = db.StringProperty()
 
@@ -176,14 +175,15 @@ class MyClassesPage(webapp2.RequestHandler):
             if result:
                 current_student = result[0]
                 if current_student.classes:
-                    my_classes = json.loads(current_student.classes) 
+                    my_classes = current_student.classes
+                    if not isinstance(my_classes, list):
+                        my_classes = json.loads(my_classes)
 
             else:
                 new_student = Student()
                 new_student.user = current_user
-                new_student.classes = None
+                new_student.classes = []
                 new_student.put()
-                my_classes = []
 
         else:
             url = users.create_login_url(self.request.uri)
@@ -258,28 +258,47 @@ class QPage(webapp2.RequestHandler):
             url_linktext = 'Login'
             is_current_user = False
 
-        for question in questions:
-            if not question.students:
-                question.students = []
+        class_query = Class.query(Class.title == class_name)
+        classes = class_query.fetch()
 
-            if current_user.user_id() in question.students:
-                question.done = True
+        if classes:
+            current_class = classes[0]
+            current_tas = current_class.tas
+            if not isinstance(current_tas, list):
+                current_tas = json.loads(current_tas)
+
+            if current_user.user_id() in current_tas:
+                logging.info('we have a match')
+                logging.info('******&&&&*******')
+
+                for question in questions:
+                    if question.tally == 0:
+                        question.answered = True
+                        question.removable = True
+
+                    else:
+                        question.removable = True
 
             else:
-                question.done = False
+                for question in questions:
+                    if not question.students:
+                        question.students = []
 
-            if question.tally == 0:
-                question.answered = True
-                question.removable = True 
+                    if current_user.user_id() in question.students:
+                        question.done = True
 
-            elif question.tally == 1 and question.author.user_id() == current_user.user_id():
-                logging.info(question.author.user_id())
-                logging.info(current_user.user_id())
-                logging.info('asdhfsdfasdh')
-                question.removable = True
+                    else:
+                        question.done = False
 
-            else:
-                question.removable = False
+                    if question.tally == 0:
+                        question.answered = True
+                        question.removable = True 
+
+                    elif question.tally == 1 and question.author.user_id() == current_user.user_id():
+                        question.removable = True
+
+                    else:
+                        question.removable = False
 
 
 
@@ -459,7 +478,6 @@ class CreateOfficeHours(webapp2.RequestHandler):
         office_hours.day = self.request.get('day')
         office_hours.class_name = class_name
         office_hours.put()
-        #class_object.put()
 
         self.redirect('/schedule/' + class_name)
 
@@ -522,51 +540,50 @@ class JoinClassAsStudent(webapp2.RequestHandler):
     def post(self, arg):
 
         class_name = arg
-
         class_query = Class.query(Class.title == class_name)
-        class_query.filter(ndb.GenericProperty('class_title') == class_name)
         classes = class_query.fetch()
-
         current_user = users.get_current_user()
 
-        for class_ in classes:
-            if class_.title == class_name:
+        if classes:
+            current_class = classes[0]
+            students_query = Student.query(Student.user == current_user)
+            student = students_query.fetch()
 
-                students_query = Student.query(Student.user == current_user)
-                result = students_query.fetch()
+            if not student:
+                new_student = Student()
+                new_student.user = current_user
+                new_student.calsses = [current_class.title]
+                new_student.put()
 
-                if not result:
-                    new_student = Student()
-                    new_student.user = current_user
-                    new_student.classes = json.dumps([class_.title])
-                    new_student.put()
+            else:
+                current_student = student[0]
+                if not current_student.classes:
+                    current_student.classes = [current_class.title]
 
                 else:
-                    current_student = result[0]
-                    if current_student.classes is None:
-                        current_student.classes = json.dumps([class_.title])
+                    current_classes = current_student.classes
+                    if not isinstance(current_classes, list):
+                        current_classes = json.loads(current_classes)
 
-                    else:
-                        current_classes = json.loads(current_student.classes)
-                        if class_.title not in current_classes:
-                            current_classes.append(class_.title)
-                            current_student.classes = json.dumps(current_classes)
+                    if current_class.title not in current_classes:
+                        current_classes.append(current_class.title)
+                        current_student.classes = current_classes
 
-                    current_student.put()
+                current_student.put()
 
-                students = json.loads(class_.students)
+            current_students = current_class.students 
 
-                if students is None:
-                    class_.students = json.dumps([students])
+            if not current_students:
+                current_class.students = [current_user.user_id()]
 
-                elif current_user.user_id() not in students:
-                    logging.info(students)
-                    logging.info(type(students))
-                    logging.info('*************')
-                    students.append(current_user.user_id())
-                    class_.students = json.dumps(students)
+            if not isinstance(current_students, list):
+                current_students = json.loads(current_students)
 
-            class_.put()
+            elif current_user.user_id() not in current_students:
+                current_students.append(current_user.user_id())
+                current_class.students = current_students
+
+            current_class.put()
 
         self.redirect('/')
 
@@ -576,48 +593,50 @@ class JoinClassAsTA(webapp2.RequestHandler):
     def post(self, arg):
 
         class_name = arg
-
         class_query = Class.query(Class.title == class_name)
-        class_query.filter(ndb.GenericProperty('class_title') == class_name)
         classes = class_query.fetch()
-
         current_user = users.get_current_user()
 
-        for class_ in classes:
-            if class_.title == class_name:
+        if classes:
+            current_class = classes[0]
+            students_query = Student.query(Student.user == current_user)
+            student = students_query.fetch()
 
-                students_query = Student.query(Student.user == current_user)
-                result = students_query.fetch()
+            if not student:
+                new_student = Student()
+                new_student.user = current_user
+                new_student.calsses = [current_class.title]
+                new_student.put()
 
-                if not result:
-                    new_student = Student()
-                    new_student.user = current_user
-                    new_student.classes = json.dumps([class_.title])
-                    new_student.put()
+            else:
+                current_student = student[0]
+                if not current_student.classes:
+                    current_student.classes = [current_class.title]
 
                 else:
-                    current_student = result[0]
-                    if current_student.classes is None:
-                        current_student.classes = json.dumps([class_.title])
+                    current_classes = current_student.classes
+                    if not isinstance(current_classes, list):
+                        current_classes = json.loads(current_classes)
 
-                    else:
-                        current_classes = json.loads(current_student.classes)
-                        if class_.title not in current_classes:
-                            current_classes.append(class_.title)
-                            current_student.classes = json.dumps(current_classes)
+                    if current_class.title not in current_classes:
+                        current_classes.append(current_class.title)
+                        current_student.classes = current_classes
 
-                    current_student.put()
+                current_student.put()
 
-                students = json.loads(class_.students)
+            current_tas = current_class.tas 
 
-                if students is None:
-                    class_.students = json.dumps([students])
+            if not current_tas:
+                current_class.tas = [current_user.user_id()]
 
-                elif current_user.user_id() not in students:
-                    students.append(current_user.user_id())
-                    class_.students = json.dumps(students)
+            if not isinstance(current_tas, list):
+                current_tas = json.loads(current_tas)
 
-            class_.put()
+            elif current_user.user_id() not in current_tas:
+                current_tas.append(current_user.user_id())
+                current_class.tas = current_tas
+
+            current_class.put()
 
         self.redirect('/')
 
@@ -646,11 +665,8 @@ class Remove(webapp2.RequestHandler):
 
     def post(self, arg):
 
-        logging.info(arg)
-        logging.info('*********')
         question_name = arg.split('|')[0]
         question_id = arg.split('|')[1]
-        logging.info(question_id)
 
         questions_query = Question.query(ancestor=question_key(question_name)).order(-Question.date)
         questions = questions_query.fetch()
@@ -669,6 +685,7 @@ class Remove(webapp2.RequestHandler):
         query_params = {'question_name': question_name}
         self.redirect('/q/' + question_name)
 
+
 class RemoveClass(webapp2.RequestHandler):
 
     def post(self, class_title):
@@ -679,13 +696,15 @@ class RemoveClass(webapp2.RequestHandler):
 
         if current_student:
             current_student = current_student[0]
-            current_classes = json.loads(current_student.classes)
+            current_classes = current_student.classes
+
+            if not isinstance(current_classes, list):
+                current_classes = json.loads(current_classes)
+
             if class_title in current_classes:
                 current_classes.remove(class_title)
-                current_student.classes = json.dumps(current_classes)
+                current_student.classes = current_classes
                 current_student.put()
-
-            #TODO
 
         self.redirect('/')
 
@@ -716,8 +735,8 @@ app = webapp2.WSGIApplication([
     (r'/q/([^/]+)', QPage),
     (r'/alt_q/([^/]+)', AltQPage),
     (r'/join_question/([^/]+)', JoinQuestion),
-    (r'/join_class/([^/]+)', JoinClassAsStudent), 
-    (r'/join_as_ta/([^/]+)', JoinClassAsTA),
+    (r'/join_class_as_student/([^/]+)', JoinClassAsStudent), 
+    (r'/join_class_as_ta/([^/]+)', JoinClassAsTA),
     (r'/remove/([^/]+)', Remove),
     (r'/remove_class/([^/]+)', RemoveClass),
     (r'/delete_class/([^/]+)', DeleteClass),

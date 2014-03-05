@@ -18,7 +18,7 @@
   <body>
     <div class="sticky-header">
       <a class="back-button-header" href="/">
-        Back
+        {% include "back_icon.html" %}
       </a>
       <h2 class="page-title"> {{ class_name }} </h2>
       <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>

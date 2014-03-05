@@ -13,6 +13,10 @@ handlers:
   static_dir: bootstrap 
 - url: /bootstrap-timepicker
   static_dir: bootstrap-timepicker
+- url: /svg
+  static_dir: svg
+- url: /images
+  static_dir: images
 
 - url: .*
   script: _q.app

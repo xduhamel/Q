@@ -24,6 +24,11 @@
         <h2> Your Classes: </h2>
     {% for class in classes %}
     <div class="class-container">
+      <div class="remove-class-button">
+        <form action="/remove_class/{{ class }}" method="post">
+          <input class="thug" type="submit" value="X"/>
+        </form>
+      </div>
       <h2 class="course-title">{{ class }}</h2>
       <div class="remove-button">
       <!---  <form action="/remove_class/{{ class }}" method="post">
@@ -38,6 +43,7 @@
     <div class="join-class-button">
       <a class="back-button" href="/join">Join a Class</a>
     </div>
+
   </body>
 </html>
 {% endautoescape %}
