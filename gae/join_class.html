@@ -37,17 +37,17 @@
           </div>
         {% endif %}
         <div class="class-title"> {{ class.title }} </div>
+                <div class="join-as-ta-button">
+          <form action="/join_class_as_ta/{{ class.title }}" method="post">
+            <div class="back-button" >
+              <input type="submit" class="post-question" value="Join As TA"/>
+            </div>
+          </form>
+        </div>
         <div class="join-as-student-button">
           <form action="/join_class_as_student/{{ class.title }}" method="post">
             <div class="back-button" >
               <input type="submit" class="post-question" value="Join As Student"/>
-            </div>
-          </form>
-        </div>
-        <div class="join-as-ta-button">
-          <form action="/join_class_as_ta/{{ class.title }}" method="post">
-            <div class="back-button" >
-              <input type="submit" class="post-question" value="Join As TA"/>
             </div>
           </form>
         </div>
