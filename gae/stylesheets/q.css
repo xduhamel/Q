@@ -514,7 +514,7 @@
 .navbarbutton {
     position: static;
     left: 0px;
-    top: 0px;
+    top: 5px;
     width: 75px;
     padding-left: 18px;
     float: left;
