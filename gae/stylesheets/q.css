@@ -19,8 +19,8 @@
     font-weight: 200;
     text-align: center;
     font-family: 'Open Sans', sans-serif;
-    background-color: #fff;
-    background-size: 30px;
+    background-size: 30px 30px;
+    background-image: url('background-tile.jpg');
   }
   .thug {
     border: 0px solid white;
@@ -140,8 +140,7 @@
     line-height: 20px;
   }
   .class-container {
-    background-size: 30px 30px;
-    background-image: url('background-tile.jpg');
+    background-color: #fff;
     border: 1px solid #9065ac;
     color: #2e2e2e;
     box-shadow: 0 0 4px 4px #d3d3d3;
