@@ -78,7 +78,7 @@
   }
   
   #Member{
-  	border: 2px solid #96e264;
+  	border: 3px solid #96e264;
   }
   
   #nonMember{
@@ -166,11 +166,11 @@
     position: absolute;
     margin-left: 100px;
   }
-  .nav-link-c {
+  .nav-link-d {
     position: absolute;
     margin-left: 200px;
   }
-  .nav-link-d {
+  .nav-link-c {
     position: absolute;
     margin-left: 250px;
   }
@@ -178,7 +178,7 @@
     position: fixed;
     bottom: 0px;
     left: -5%;
-    height: 45px;
+    height: 50px;
     width: 110%;
     background-color: #111125;
     line-height: 45px;
