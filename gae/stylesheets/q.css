@@ -19,8 +19,8 @@
     font-weight: 200;
     text-align: center;
     font-family: 'Open Sans', sans-serif;
-    background-size: 30px 30px;
-    background-image: url('background-tile.jpg');
+    background-size: 15px 15px;
+    background-image: url('yo.jpg');
   }
   .thug {
     border: 0px solid white;
@@ -29,7 +29,7 @@
     font-size: 14px;
     font-weight: 100;
   }
-  .logn-button {
+  .login-button {
     background-color: transparent;
     position: absolute;
     margin-top: -50px;
@@ -72,7 +72,7 @@
   .question {
     background-color: #fff;
     color: #2d2d2d;
-    box-shadow: 0 0 4px 4px #d3d3d3;
+    box-shadow: 0 0 4px 4px #eee;
     margin: 10px 0px 10px 0px;
     border-radius: 4px;
   }
@@ -99,7 +99,7 @@
     border: 0px solid #e2e2e2;
     margin: 10px 0px 10px 0px; 
     border-radius: 3px;
-    height: 30px;
+    height: 38px;
   }
   .new-question-container {
     background-color: #fff;
@@ -143,7 +143,7 @@
     background-color: #fff;
     border: 1px solid #9065ac;
     color: #2e2e2e;
-    box-shadow: 0 0 4px 4px #d3d3d3;
+    box-shadow: 0 0 4px 4px #eee;
     border-radius: 3px;
     height: 180px;
     margin: 10px 0 10px 0;
@@ -167,7 +167,7 @@
   }
   .nav-link-d {
     position: absolute;
-    margin-left: 200px;
+    margin-left: 30%;
   }
   .nav-link-c {
     position: absolute;
@@ -190,7 +190,12 @@
     width: 100%;
   }
   .nav-bar-spacing {
-    height: 38px;
+    height: 44px;
+    background-color: transparent;
+    width: 100%;
+  }
+  .question-button-spacing {
+    height: 20px;
     background-color: transparent;
     width: 100%;
   }
@@ -276,7 +281,7 @@
     border-radius: 3px;
     color: #f1f1f1;
     width: 15%;
-    left: 8%;
+    left: 53%;
     height: 50px;
     margin: 10px auto 0 auto;
     box-shadow: 0 0 4px 4px #d3d3d3;
@@ -291,7 +296,7 @@
     border-radius: 3px;
     color: #f1f1f1;
     width: 19%;
-    left: 53%;
+    left: 8%;
     height: 50px;
     margin: 10px auto 0 auto;
     box-shadow: 0 0 4px 4px #d3d3d3;
@@ -392,15 +397,16 @@
   }
   .new-question-button {
     background-color: #111125;
-    border-radius: 4px;
-    box-shadow: 0 0 3px 3px #111125;
-    border: 0px solid #96e264;
+    border: 1px solid #ddd;
     color: #96e264;
-    width: 55%;
+    width: 100%;
     height: 40px;
     line-height: 40px;
-    margin: 10px auto;
     padding-left: 45%;
+    margin-left: -10px;
+    margin-top: -4px;
+    opacity: .9;
+    position: fixed;
   }
   .post-question-button {
     background-color: #111125;

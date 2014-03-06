@@ -16,12 +16,11 @@
     });
   </script>
   <div class="sticky-header">
-    <h2 class="page-title"> Office Hours </h2>
+    <h2 class="page-title"> My Classes </h2>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
     <div class="header-margin"></div>
-        <h2> Your Classes: </h2>
     {% for class in classes %}
     <div class="class-container">
       <div class="remove-class-button">
@@ -40,9 +39,17 @@
       </div>
     </div>
     {% endfor %}
-    <div class="join-class-button">
-      <a class="back-button" href="/join">Join a Class</a>
+    <div class="nav-bar-spacing"></div>
+    <div class="footer-nav">
+      <div class="w-nav-button navbarbutton">
+        <div class="nav-link-d">
+          <a href="/join">
+            Add a Class
+          </a>
+        </div>
+      </div>
     </div>
+
 
   </body>
 </html>

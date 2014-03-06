@@ -152,6 +152,9 @@ class ViewSchedulePage(webapp2.RequestHandler):
             else:
                 is_ta = False
 
+        else:
+            is_ta = True
+
         oh_query = OfficeHours.query(OfficeHours.class_name == class_name) #.order(-OfficeHours.date)
         office_hours = oh_query.fetch()
 
@@ -219,12 +222,33 @@ class JoinClassPage(webapp2.RequestHandler):
     def get(self):
 
         all_classes = DEFAULT_CLASS
-        class_query = Class.query(Class.valid_class == True, ancestor=class_key(all_classes)).order(-Class.creation_time)
+        class_query = Class.query(Class.valid_class == True).order(-Class.creation_time)
         classes = class_query.fetch()
 
+        current_user = users.get_current_user()
+
+        student_query = Student.query(Student.user == current_user)
+        student_ = student_query.fetch()
+
+        if student_:
+            current_student = student_[0]
+
+        real_classes = []
         for class_ in classes:
-            if class_.title is None:
-                classes.remove(class_)
+            
+            current_classes = current_student.classes
+            if not isinstance(current_classes, list):
+                current_classes = json.loads(current_classes)
+
+            logging.info(class_.title)
+
+            #if class_.title not in current_classes or class_.title is not None:
+            #    real_classes.append(class_)
+
+            if class_.title not in current_classes:
+                logging.info('PARTAY!')
+                if class_.title is not None:
+                    real_classes.append(class_)
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -238,7 +262,7 @@ class JoinClassPage(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('join_class.html')
         template_values = {
-            'classes': classes,
+            'classes': real_classes,
             'url': url,
             'url_linktext': url_linktext,
         }
@@ -285,21 +309,14 @@ class QPage(webapp2.RequestHandler):
                 is_student = True
 
             else:
-                is_student = False
+                is_student = True
 
             if not isinstance(current_tas, list):
                 current_tas = json.loads(current_tas)
 
-            logging.info(current_tas)
-            logging.info(type(json.loads(current_tas[0])))
-            logging.info('-----------')
-            logging.info(current_user.user_id())
-            logging.info(len(current_tas))
-
             if current_user.user_id() in current_tas:
                 
                 for question in questions:
-                    logging.info('got ya nigga!')
                     question.removable = True
 
             else:
@@ -323,7 +340,8 @@ class QPage(webapp2.RequestHandler):
                     else:
                         question.removable = False
 
-
+        else:
+            is_student = False
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         template_values = {
@@ -340,46 +358,91 @@ class QPage(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
+
 class AltQPage(webapp2.RequestHandler):
     """ Handles the displaying of the Q. """
 
     def get(self, queue):
 
+        class_name = queue.split('+')[0]
+        link_name = queue.split('+')[1]
+
         question_name = queue
-        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.date)  # HERE ---------
+        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.tally)  # HERE ---------
         questions = questions_query.fetch()
 
         current_user = users.get_current_user()
 
-        if current_user.email() == 'mttdhml@gmail.com':
-            removable = True
-        else:
-            removable = False
-
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
-            current_user = True
+            is_current_user = True
 
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
-            current_user = False
+            is_current_user = False
 
-        for question in questions:
-            question.color = get_random_color()
+        class_query = Class.query(Class.title == class_name)
+        classes = class_query.fetch()
 
-        template = JINJA_ENVIRONMENT.get_template('index2.html')
+        if classes:
+            current_class = classes[0]
+            current_tas = current_class.tas
+
+            current_students = current_class.students
+            if not isinstance(current_students, list):
+                current_students = json.loads(current_students)
+
+            if current_user.user_id() in current_students:
+                is_student = True
+
+            else:
+                is_student = False
+
+            if not isinstance(current_tas, list):
+                current_tas = json.loads(current_tas)
+
+            if current_user.user_id() in current_tas:
+                
+                for question in questions:
+                    question.removable = True
+
+            else:
+                for question in questions:
+                    if not question.students:
+                        question.students = []
+
+                    if current_user.user_id() in question.students:
+                        question.done = True
+
+                    else:
+                        question.done = False
+
+                    if question.tally == 0:
+                        question.answered = True
+                        question.removable = True 
+
+                    elif question.tally == 1 and question.author.user_id() == current_user.user_id():
+                        question.removable = True
+
+                    else:
+                        question.removable = False
+
+        else:
+            is_student = False
+
+        template = JINJA_ENVIRONMENT.get_template('alt_index.html')
         template_values = {
-                'class_name': queue, 
+                'url': url,
+                'class_name': class_name, 
                 'questions': questions,
                 'question_name': question_name,
-                'removable': removable,
-                'url': url,
                 'url_linktext': url_linktext,
+                'removable': True,
                 'name_tag': 'generic_tag',
                 'question_time': DEFAULT_TIME,
-                'current_user': current_user,
+                'current_user': is_student,
         }
 
         self.response.write(template.render(template_values))
@@ -604,7 +667,7 @@ class JoinClassAsTA(webapp2.RequestHandler):
         class_query = Class.query(Class.title == class_name)
         classes = class_query.fetch()
         current_user = users.get_current_user()
-        logging.info('&&&&&7&&&&&&&')
+
         if classes:
             current_class = classes[0]
             students_query = Student.query(Student.user == current_user)
@@ -694,6 +757,14 @@ class RemoveClass(webapp2.RequestHandler):
                 current_student.classes = current_classes
                 current_student.put()
 
+                class_query = Class.query(Class.title == class_title)
+                class_ = class_query.fetch()
+                if class_:
+                    current_class = class_[0]
+
+                    #if current_user.user_id() in current_class.students:
+                    #       current_class.students.
+
         self.redirect('/')
 
 
@@ -720,6 +791,8 @@ app = webapp2.WSGIApplication([
     (r'/schedule/([^/]+)', ViewSchedulePage),
     (r'/join', JoinClassPage),
     (r'/q/([^/]+)', QPage),
+    (r'/q/A+Phantom', QPage),
+    (r'/q/B+Phantom', AltQPage),
     (r'/alt_q/([^/]+)', AltQPage),
     (r'/join_question/([^/]+)', JoinQuestion),
     (r'/join_class_as_student/([^/]+)', JoinClassAsStudent), 

@@ -12,18 +12,17 @@
 
       <div class="w-nav-button navbarbutton">
         <div class="nav-link-b">
-          <a href="/schedule"> 
+          <a href="/schedule/{{ class_title }}"> 
             {% include "calendar2.svg" %}
           </a>
         </div>
       </div>
 
       <div class="w-nav-button navbarbutton">
-        <div class="nav-link-d">
-          <a href="/newQ/{{ question_name }}">
-            {% include "plus_icon.svg" %}
-          </a>
+        <div class="nav-link-d"> 
+            <a href="/newQ/{{ question_name }}">
+            Ask a new
+          </a>  
         </div>
       </div>
-
   </div>

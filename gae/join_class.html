@@ -24,9 +24,6 @@
   </div>
   <body>
     <div class="header-margin"></div>
-    <div class="create-class-button">
-      <a class="back-button" href="/new_class">Create a New Class</a>
-    </div>
     {% for class in classes %}
       <div class="new-class-container">
         {% if class.removable %}
@@ -53,6 +50,16 @@
         </div>
       </div>
     {% endfor %}
+    <div class="nav-bar-spacing"></div>
+    <div class="footer-nav">
+      <div class="w-nav-button navbarbutton">
+        <div class="nav-link-d">
+          <a href="/new_class">
+            Create a Class
+          </a>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 {% endautoescape %}
