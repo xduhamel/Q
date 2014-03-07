@@ -1,16 +1,17 @@
 @media (max-width: 500px) {
     .sticky-header {
+        position: fixed;
         top: 0;
         width: 110%;
-        height: 72px;
-        line-height: 50px;
-        background-color: #111125;
+        height: 84px;
+        line-height: 70px;
+        background-color: #eee;
         margin-top: -25px;
         margin-left: -5%;
         opacity: .95;
         position: fixed;
         z-index: 4;
-        opacity: .9;
+        opacity: .85;
         box-shadow: 0 0 4px 4px #d1d1d1;
     }
     .content {

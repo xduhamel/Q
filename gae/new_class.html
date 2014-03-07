@@ -14,14 +14,14 @@
   </script>
   <div class="sticky-header">
     <a class="back-button-header" href="/">Cancel</a>
-    <h2 class="page-title"> Add a Class </h2>
+    <h3> Add a Class </h3>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
     <div class="header-margin"></div>
     <div class="new-question-container">
       <form action="/create_class/{{ class_name }} " method="post">
-        <div class="new-title">Class Title</div>
+        <h3>Class Title</h3>
         <div>
           <textarea name="title" rows="1" cols="40"></textarea>
         </div>
@@ -29,12 +29,12 @@
         <div>
           <textarea name="teacher" rows="1" cols="40"></textarea>
         </div>
-        <div class='submit-class-button'>
+        <div class="nav-bar-background"></div>
+        <div class="footer-nav">
           <input type="submit" class="post-question" value="Create Class"/>
         </div>
       </form>
     </div>
-    {% include "nav_bar.html" %}
   </body>
 </html>
 {% endautoescape %}

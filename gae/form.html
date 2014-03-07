@@ -1,0 +1,13 @@
+  <html>
+    <body>
+      <form action="/sign?%s" enctype="multipart/form-data" method="post">
+        <div><textarea name="content" rows="3" cols="60"></textarea></div>
+        <div><label>Avatar:</label></div>
+        <div><input type="file" name="img"/></div>
+        <div><input type="submit" value="Sign Guestbook"></div>
+      </form>
+      <hr>
+      <form>Guestbook name: <input value="%s" name="guestbook_name">
+      <input type="submit" value="switch"></form>
+    </body>
+  </html>

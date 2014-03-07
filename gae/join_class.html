@@ -19,8 +19,10 @@
     <a class="back-button-header" href="/">
       {% include "back_icon.html" %}
     </a>
-    <h2 class="page-title"> Join a Class </h2>
-    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    <h3> Join a Class </h3>
+    <div class="login-spacing">
+      <a class="login-button-color" href="{{ url|safe }}">{{ url_linktext }}</a>
+    </div>
   </div>
   <body>
     <div class="header-margin"></div>
@@ -33,33 +35,45 @@
             </form>
           </div>
         {% endif %}
-        <div class="class-title"> {{ class.title }} </div>
-        <div class="join-as-student-button">
-          <form action="/join_class_as_student/{{ class.title }}" method="post">
-            <div class="back-button" >
-              <input type="submit" class="post-question" value="Join As Student"/>
-            </div>
-          </form>
-        </div>
-        <div class="join-as-ta-button">
+        <h2 class="class-title"> {{ class.title }} </h2>
+        <div> Professor: {{ class.teacher }} </div>
+        <div id="remove-me-{{class.teacher}}" onclick="fadeOut('{{class.teacher}}');" class="join-class-button"> Join Class </div>
+        <div id="show-me-{{class.teacher}}" class="fade-out">
           <form action="/join_class_as_ta/{{ class.title }}" method="post">
-            <div class="back-button" >
-              <input type="submit" class="post-question" value="Join As TA"/>
-            </div>
+            <div class="student-container"></div>
+            <input type="submit" class="join-class-as-student" value="I'm a TA"/>
+          </form>
+          <form action="/join_class_as_student/{{ class.title }}" method="post">
+            <div class="ta-container"></div>
+            <input type="submit" class="join-class-as-ta" value="I'm a student"/>
           </form>
         </div>
       </div>
     {% endfor %}
     <div class="nav-bar-spacing"></div>
+    <a href="/new_class">
+    <div class="nav-bar-background">.</div>
     <div class="footer-nav">
-      <div class="w-nav-button navbarbutton">
-        <div class="nav-link-d">
-          <a href="/new_class">
-            Create a Class
-          </a>
-        </div>
-      </div>
+      Create a Class
     </div>
+    </a>
+    <script type="text/javascript">
+      function fadeOut(hello) {
+        var removeID = "remove-me-" + hello;
+        var showID = "show-me-" + hello;
+        document.getElementById(removeID).className = "joining-class-button";
+        document.getElementById(removeID).className = "hidden";
+        document.getElementById(showID).className = "fade-in";
+      }
+      function hide() {
+        document.getElementById("remove-me").className = "hidden";
+        document.getElementById("show-me").className = "fade-in";
+        //window.setTimeout(show, 400);
+      }
+      function show() {
+        document.getElementById("show-me").className = "fade-in";
+      }
+    </script>
   </body>
 </html>
 {% endautoescape %}

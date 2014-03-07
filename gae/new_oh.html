@@ -4,46 +4,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
   <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
-  <link type="text/css" rel="stylesheet" href="/stylesheets/bootstrap-timepicker.min.css">
-  
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-    
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
-  <script type="text/javascript" src="../js/bootstrap-timepicker.min.js"></script>
-  <!--<script type="text/javascript" src="../js/jquery.autotype.js"></script>-->
-  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
-  <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  
-
-  <script type="text/javascript" src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js"></script>
-  <script type="text/javascript"
-     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
-    </script>
-
-  <script>
-    WebFont.load({
-      google: {
-        families: ["Open Sans:300,400,600, 700, 800"]
-      }
-    });
-  </script>
   
   <div class="sticky-header">
-    <a class="back-button-header" href="/">Cancel</a>
-    <h2 class="page-title">Schedule OH</h2>
-    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    <a class="back-button-header" href="javascript:history.back()">Cancel</a>
+    <h3>New OH</h3>
+    <div class="login-spacing">
+      <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    </div>
   </div>
   <body>
     <div class="header-margin"></div>
     <div class="new-oh-container">
       <form action="/create_oh/{{ class_name }} " method="post">
-        <div class="new-title">TA First Name</div>
+        <div class="new-title">First Name</div>
         <div>
           <textarea name="first_name" rows="1" cols="40" required></textarea>
         </div>
-        <div class="teacher">TA Last Name</div>
+        <div class="teacher">Last Name</div>
         <div>
           <textarea name="last_name" rows="1" cols="40" required></textarea>
         </div>
@@ -52,37 +30,26 @@
           <textarea name="location" rows="1" cols="40" required></textarea>
         </div>
         <div class="teacher">Start Time</div>
-        <div class="input-append bootstrap-timepicker">
-          <input name="start_time" id="start-time-picker" type="text" class="input-small" required>
-          <span class="add-on"><i class="icon-time"></i></span>
-        </div>
+        
+        <input name="start_time" type="time"/>
+      
         <div class="teacher">End Time</div>
-        <div class="input-append bootstrap-timepicker">
-          <input name="end_time" id="end-time-picker" type="text" class="input-small" required>
-          <span class="add-on"><i class="icon-time"></i></span>
-        </div>
-        <div class="teacher">Day</div>
-        <div id="date-picker" class="input-append date">
-          <input name="day" data-format="dd/MM/yyyy" type="text" required></input>
-            <span class="add-on">
-              <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-            </span>
-        </div>
-        <div class="add-oh-button">
+        
+        <input name="end_time" type="time"/>
+        
+        <div class="teacher">Date</div>
+        
+          <input name="day" data-format="dd/MM/yyyy" type="date"/>
+          <span class="add-on">
+            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+          </span>
+        <div class="nav-bar-background">.</div>
+        <div class="nav-bar-spacing">.</div>
+        <div class="footer-nav">
           <input type="submit" class="post-question" value="Post Office Hours"/>
         </div>
       </form>
     </div>
-    {% include "nav_bar.html" %}
-    <div class="footer-margin">.</div>
-    <script type="text/javascript">
-      $('#start-time-picker').timepicker();
-      $('#end-time-picker').timepicker();
-      $(function() {
-        $('#date-picker').datetimepicker({
-        });
-      });
-    </script>
   </body>
 </html>
 {% endautoescape %}
