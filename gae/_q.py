@@ -157,10 +157,15 @@ class ViewSchedulePage(webapp2.RequestHandler):
 
         oh_query = OfficeHours.query(OfficeHours.class_name == class_name) #.order(-OfficeHours.date)
         office_hours = oh_query.fetch()
+        if not office_hours:
+            no_office_hours = True
+        else:
+            no_office_hours = False
 
         template = JINJA_ENVIRONMENT.get_template('join_oh.html')
 
         template_values = {
+            'no_oh': no_office_hours,
             'class_name': class_name,
             'office_hours': office_hours,
             'url': url,

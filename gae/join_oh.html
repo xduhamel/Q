@@ -24,6 +24,14 @@
       <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
     </div>
     <div class="header-margin"> </div>
+    {% if no_oh %}
+      {% if is_ta %}
+        <div> Be the first TA to schedule Office Hours! </div>
+      {% else %}
+        div> There are currently no Office Hours </div>
+        <div> scheduled for this class. </div>
+      {% endif %}
+    {% endif %}
     {% for oh in office_hours %}
       <div class="oh-container">
         <h2>{{ oh.first_name }} {{ oh.last_name }}'s Office Hours</h2>
@@ -34,8 +42,8 @@
         {% else %}
           <div> {{ oh.attending_count }} students attending</div>
         {% endif %}
-        <!--<div class="join-oh-button"><a href="/q/{{ class_name }}+{{ oh.first_name }}">Join OH</a></div>-->
-        <div class="join-oh-button"><a href="/q/A+Phantom"> Join OH </a></div>
+        <div class="join-oh-button"><a href="/q/{{ class_name }}+{{ oh.first_name }}">Join OH</a></div>
+        <!--<div class="join-oh-button"><a href="/q/A+Phantom"> Join OH </a></div>-->
       </div>
     {% endfor %}
     {% if is_ta %}
