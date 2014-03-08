@@ -82,6 +82,7 @@ class Question(ndb.Model):
     removable = ndb.BooleanProperty('removable')
     contacts = ndb.JsonProperty('contacts')
     pic_id = ndb.StringProperty()
+    is_pic = ndb.BooleanProperty('is_pic')
 
 
 class Class(ndb.Model):
@@ -851,9 +852,10 @@ class PostProblem(blobstore_handlers.BlobstoreUploadHandler):
             blob_info = upload_files[0]
             if blob_info:
                 question.pic_id = str(blob_info.key())
-
+                question.is_pic = True
         else:
             question.pic_id = None
+            question.is_pic = False
 
         question.title = self.request.get('title')
         question.content = self.request.get('content')
@@ -922,7 +924,7 @@ app = webapp2.WSGIApplication([
     (r'/create_oh/([^/]+)', CreateOfficeHours),
     (r'/map', Map),
     (r'/question_members/([^/]+)', ViewQuestionMembers),
-    (r'/upload', UploadHandler),
+    (r'/_ah/upload', UploadHandler),
     (r'/q/serve/([^/]+)?', ServeHandler),
     (r'/blob/([^/]+)', Blob)
 ], debug=True)

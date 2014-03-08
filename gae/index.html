@@ -77,7 +77,7 @@
         {% endif %}
         <h3> {{ question.title }} </h3>
         <blockquote> {{ question.content }} </blockquote>
-        {% if question.pic_id %}
+        {% if question.is_pic %}
           <div class="image-container">
             <div> yo </div>
             <img src="serve/{{question.pic_id}}"></img>
