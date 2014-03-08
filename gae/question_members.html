@@ -26,9 +26,11 @@
     </div>
     <div class="header-margin">.</div>
     <div class="contacts-container">
-      {% for contact in contacts %}
-        <div> {{contact}} </div>
-      {% endfor %}
+      {% if contacts %}
+        {% for contact in contacts %}
+          <div> {{contact}} </div>
+        {% endfor %}
+      {% endif %}
     </div>
   </body>
 </html>
