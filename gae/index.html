@@ -7,7 +7,7 @@
   <link type="text/css" rel="stylesheet" href="/stylesheets/name_tags.css"/>
   <link type="text/css" rel="stylesheet" href="/stylesheets/header.css"/>
   <head>
-    <!-- Google Analytics Content Experiment code -->
+    <!-- Google Analytics Content Experiment code 
     <script>function utmx_section(){}function utmx(){}(function(){var
     k='83002999-1',d=document,l=d.location,c=d.cookie;
     if(l.search.indexOf('utm_expid='+k)>0)return;
@@ -20,7 +20,7 @@
     valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
     '" type="text/javascript" charset="utf-8"><\/sc'+'ript>')})();
     </script><script>utmx('url','A/B');</script>
-    <!-- End of Google Analytics Content Experiment code -->
+     End of Google Analytics Content Experiment code -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -50,38 +50,50 @@
     {% for question in questions %}
       {% if not question.answered %}
         {% if not question.done %}
-  		 <div class="question" id="nonMember">
-  		 {%else%}
-  		 <div class="question" id="Member">
-  		 {% endif %}
-          <div class="generic_tag" id="gray">{{ question.tally }}</div>
-
-          {% if question.removable %}
-            <div class="remove-button">
-              <form action="/remove/{{ question_name }}|{{ question.q_id }}" method="post">
-                <input class="thug" type="submit" value="X"/>
-              </form>
+  		    <div class="question" id="nonMember">
+  		  {%else%}
+  		    <div class="question" id="Member">
+  		  {% endif %}
+        <a href="/question_members/{{question.q_id}}">
+          <div class="generic_tag" id="gray">
+            {% include "user.svg" %}
+            <div class="tally">
+              {{ question.tally }}
             </div>
-          {% endif %}
-          {% if question.author %}
-            <div class="author_name"> {{ question.author }} </div>
-          {% endif %}
-          {% if question_time %}
+          </div>
+        </a>
+        {% if question.removable %}
+          <div class="remove-button">
+            <form action="/remove/{{ question_name }}|{{ question.q_id }}" method="post">
+              <input class="thug" type="submit" value="X"/>
+            </form>
+          </div>
+        {% endif %}
+        {% if question.author %}
+          <div class="author_name"> {{ question.author }} </div>
+        {% endif %}
+        {% if question_time %}
           <div class="question-time"> {{ question.date }} </div>
-          {% endif %}
-          <h3> {{ question.title }} </h3>
-          <blockquote> {{ question.content }} </blockquote>
-          {% if current_user %}
-            <div class="join-question-button">
-              <form action="/join_question/{{ question_name }}|{{ link_name }}|{{ question.q_id }}" method="post">
-                {% if not question.done %}
-                  <input class="thug" type="submit" value="Join Question"/>
-                {% else %}
-                  <input class="thug" type="submit" value="Leave Question"/>
-                {% endif %}
-              </form>
-            </div>
-          {% endif %}
+        {% endif %}
+        <h3> {{ question.title }} </h3>
+        <blockquote> {{ question.content }} </blockquote>
+        {% if question.pic_id %}
+          <div class="image-container">
+            <div> yo </div>
+            <img src="serve/{{question.pic_id}}"></img>
+          </div>
+        {% endif %}
+        {% if current_user %}
+          <div class="join-question-button">
+            <form action="/join_question/{{ question_name }}|{{ link_name }}|{{ question.q_id }}" method="post">
+              {% if not question.done %}
+                <input class="thug" type="submit" value="Join Question"/>
+              {% else %}
+                <input class="thug" type="submit" value="Leave Question"/>
+              {% endif %}
+            </form>
+          </div>
+        {% endif %}
         </div>
         {% endif %}
       {% endfor %}
@@ -89,7 +101,7 @@
     <div class="footer-nav" data-collapse="all" data-animation="default" data-duration="400" data-contain="1">
       <div class="w-nav-button navbarbutton">
         <div class="nav-link-d">
-          <a href="/newQ/{{ question_name }}" onclick="trackOutboundLink('/newQ/{{ question_name }}'); return false;">
+          <a href="/newQ/{{question_name}}|{{link_name}}" onclick="trackOutboundLink('/newQ/{{ question_name }}|{{link_name}}'); return false;">
             Ask a new Question
           </a>
         </div>
@@ -115,7 +127,6 @@
            }
          });
       }
-
 
     </script>
   </body>

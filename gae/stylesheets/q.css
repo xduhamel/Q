@@ -94,6 +94,26 @@
     border-radius: 3px;
     height: 250px;
   }
+  .contacts-container {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    color: #2d2d2d;
+    margin: 10px 0px 10px 0px; 
+    border-radius: 3px;
+  }
+  .image-container {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    color: #2d2d2d;
+    margin: 10px 0px 10px 0px; 
+    border-radius: 3px;
+    width: 200px;
+    height: 200px;
+  }
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+  }
   .header-margin {
     background-color: transparent;
     border: 0px solid #e2e2e2;
@@ -114,7 +134,7 @@
     background-color: #fff;
     border: 1px solid #e2e2e2;
     color: #2d2d2d;
-    box-shadow: 0 0 3px 3px #111125; 
+    box-shadow: 0 0 3px 3px #ddd; 
     margin: 10px 0px 10px 0px; 
     border-radius: 3px;
     height: 440px;
@@ -175,13 +195,16 @@
   }
   .footer-nav {
     position: fixed;
-    bottom: 0px;
+    bottom: 15px;
     left: -5%;
     height: 50px;
     width: 110%;
-    background-color: #111125;
-    line-height: 45px;
-    opacity: .9;
+    background-color: #22bfef;
+    box-shadow: 0 0 4px 4px #cdcdcd;
+    line-height: 50px;
+    opacity: .95;
+    color: black;
+    padding-left: auto;
   }
   .footer-margin {
     height: 50px;
@@ -190,7 +213,7 @@
     width: 100%;
   }
   .nav-bar-spacing {
-    height: 44px;
+    height: 60px;
     background-color: transparent;
     width: 100%;
   }
@@ -280,14 +303,14 @@
     border: 1px solid #4dbef8;
     border-radius: 3px;
     color: #f1f1f1;
-    width: 15%;
+    width: 22%;
     left: 53%;
     height: 50px;
     margin: 10px auto 0 auto;
     box-shadow: 0 0 4px 4px #d3d3d3;
     line-height: 50px;
     opacity: .95;
-    padding-left: 20%;
+    padding-left: 11%;
   }
   .join-as-student-button {
     position: absolute;
@@ -295,14 +318,14 @@
     border: 1px solid #96e264;
     border-radius: 3px;
     color: #f1f1f1;
-    width: 19%;
+    width: 28%;
     left: 8%;
     height: 50px;
     margin: 10px auto 0 auto;
     box-shadow: 0 0 4px 4px #d3d3d3;
     line-height: 50px;
     opacity: .95;
-    padding-left: 20%;
+    padding-left: 14%;
   }
   .add-oh-button {
     background-color: #111125;

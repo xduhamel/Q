@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% autoescape true %} 
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/q.css">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/header.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <script>
+      WebFont.load({
+        google: {
+          families: ["Open Sans:300,400,600, 700, 800"]
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div class="sticky-header">
+      <a class="back-button-header" href="javascript:history.back()">
+        {% include "back_icon.html" %}
+      </a>
+      <h2 class="page-title"> Contacts </h2>
+      <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    </div>
+    <div class="header-margin">.</div>
+    <div class="image-container">
+      <img src="serve/{{blob_key}}"></img>
+    </div>
+  </body>
+</html>
+{% endautoescape %}hci

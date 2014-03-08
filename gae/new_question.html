@@ -13,14 +13,14 @@
     });
   </script>
   <div class="sticky-header">
-    <a class="back-button-header" href="/">Cancel</a>
+    <a class="back-button-header" href="javascript:history.back()">Cancel</a>
     <h2 class="page-title">New Question</h2>
     <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
   </div>
   <body>
     <div class="header-margin"></div>
     <div class="new-question-container">
-        <form action="/ask/{{ question_name }}" method="post">
+      <form action="/ask/{{ question_name }}" method="post">
         <div class="new-title">Title</div>
         <div>
           <textarea name="title" rows="1" cols="40" required></textarea>
@@ -30,6 +30,10 @@
           <textarea name="content" rows="3" cols="40"></textarea>
         </div>
         <div class="submit-class-button"><input type="submit" class="post-question" value="Post Question"/></div>
+      </form>
+      <form action="{{upload_url}}" method="POST" enctype="multipart/form-data"> Upload Image: 
+        <input type="file" name="file"><br> 
+        <input type="submit" name="submit" value="Submit"> 
       </form>
     </div>
   </body>

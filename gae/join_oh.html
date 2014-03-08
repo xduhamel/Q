@@ -28,7 +28,7 @@
       {% if is_ta %}
         <div> Be the first TA to schedule Office Hours! </div>
       {% else %}
-        div> There are currently no Office Hours </div>
+        <div> There are currently no Office Hours </div>
         <div> scheduled for this class. </div>
       {% endif %}
     {% endif %}
@@ -47,8 +47,15 @@
       </div>
     {% endfor %}
     {% if is_ta %}
-      <div class="add-oh-button">
-        <a href="/new_oh/{{ class_name }}">Add Office Hours</a>
+      <div class="nav-bar-spacing"></div>
+      <div class="footer-nav">
+        <div class="w-nav-button navbarbutton">
+          <div class="nav-link-d">
+            <a href="/new_oh/{{ class_name }}">
+              Add Office Hours
+            </a>
+          </div>
+        </div>
       </div>
     {% endif %}
   </body>
