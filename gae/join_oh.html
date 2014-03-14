@@ -20,8 +20,10 @@
       <a class="back-button-header" href="/">
         {% include "back_icon.html" %}
       </a>
-      <h2 class="page-title"> {{ class_name }} </h2>
-      <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+      <h3 class="page-title-class"> {{ nick_name }} </h3>
+      <div class="login-spacing">
+        <a class="login-button-color" href="{{ url|safe }}">{{ url_linktext }}</a>
+      </div>
     </div>
     <div class="header-margin"> </div>
     {% if no_oh %}
@@ -33,30 +35,35 @@
       {% endif %}
     {% endif %}
     {% for oh in office_hours %}
-      <div class="oh-container">
-        <h2>{{ oh.first_name }} {{ oh.last_name }}'s Office Hours</h2>
-        <div> {{ oh.day }}, {{ oh.start_time }} - {{ oh.end_time }} </div>
-        <div> {{ oh.location }} </div>
-        {% if not oh.attending_count %}
-          <div> Be the first to attend! </div>
-        {% else %}
-          <div> {{ oh.attending_count }} students attending</div>
-        {% endif %}
-        <div class="join-oh-button"><a href="/q/{{ class_name }}+{{ oh.first_name }}">Join OH</a></div>
-        <!--<div class="join-oh-button"><a href="/q/A+Phantom"> Join OH </a></div>-->
-      </div>
+      {% if oh.ended == false %}
+        <div class="oh-container">
+          <h2>{{ oh.first_name }} {{ oh.last_name }}'s Office Hours</h2>
+          <div> {{ oh.day }}, {{ oh.start_time }} - {{ oh.end_time }} </div>
+          <div> {{ oh.location }} </div>
+          {% if not oh.attending_count %}
+            <div> Be the first to attend! </div>
+          {% else %}
+            <div> {{ oh.attending_count }} student(s) have joined</div>
+          {% endif %}
+          {% if oh.active == true %}
+            <a class="white-link-color" href="/q/{{ class_name }}+{{oh.identifier}}">
+              <div class="join-oh-button">
+                Join Office Hours
+              </div>
+            </a>
+          {% endif %}
+          <!--<div class="join-oh-button"><a href="/q/A+Phantom"> Join OH </a></<div></div>iv>-->
+        </div>
+      {% endif %}
     {% endfor %}
     {% if is_ta %}
       <div class="nav-bar-spacing"></div>
-      <div class="footer-nav">
-        <div class="w-nav-button navbarbutton">
-          <div class="nav-link-d">
-            <a href="/new_oh/{{ class_name }}">
-              Add Office Hours
-            </a>
-          </div>
+      <div class="nav-bar-background">.</div>
+      <a href="/new_oh/{{ class_name }}">
+        <div class="footer-nav">
+          Add Office Hours
         </div>
-      </div>
+      </a>
     {% endif %}
   </body>
 </html>

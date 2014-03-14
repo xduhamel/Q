@@ -16,8 +16,10 @@
     });
   </script>
   <div class="sticky-header">
-    <h2 class="page-title"> My Classes </h2>
-    <a class="login-button" href="{{ url|safe }}">{{ url_linktext }}</a>
+    <h3> My Classes </h3>
+    <div class="login-spacing">
+      <a class="login-button-color" href="{{ url|safe }}"> {{ url_linktext }} </a>
+    </div>
   </div>
   <body>
     <div class="header-margin"></div>
@@ -25,7 +27,7 @@
     <div class="class-container">
       <div class="remove-class-button">
         <form action="/remove_class/{{ class }}" method="post">
-          <input class="thug" type="submit" value="X"/>
+          <input class="iono" type="submit" value="X"/>
         </form>
       </div>
       <h2 class="course-title">{{ class }}</h2>
@@ -34,21 +36,21 @@
           <input class="thug" type="submit" value="X"/>
         </form> -->
       </div>
-      <div class="view-class-button">
-        <a href="/schedule/{{ class }}">View Office Hours Schedule</a>
-      </div>
+      <a class="white-link-color" href="/schedule/{{ class }}">
+        <div class="view-class-button">
+          View Office Hours Schedule
+        </div>
+      </a>
     </div>
     {% endfor %}
     <div class="nav-bar-spacing"></div>
-    <div class="footer-nav">
-      <div class="w-nav-button navbarbutton">
-        <div class="nav-link-d">
-          <a href="/join">
-            Add a Class
-          </a>
+    <div class="nav-bar-background">.</div>
+    <a class="big-button" href="/join">
+      <div class="footer-nav">
+          Add a Class
         </div>
       </div>
-    </div>
+    </a>
   </body>
 </html>
 {% endautoescape %}

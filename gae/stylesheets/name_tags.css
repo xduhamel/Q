@@ -1,7 +1,8 @@
+
 @media (max-width: 500px) {
     .generic_tag {
         width: 60px;
-        height: 80px;
+        height: 60px;
         line-height: 60px;
         border-top-left-radius: 4px;
         color: #fff;
@@ -10,11 +11,27 @@
         */
     }
     .tally {
-        margin-top: -10px;
+        margin-top: -60px;
         margin-left: 0px;
-        background-color: #a3a3a3;
-        height: 55px;
+        color: #111125;
+        height: 60px;
         line-height: 55px;
+        text-decoration: none;
+        background-size: 15px 15px;
+        background-image: url('gird.jpg');
+        font-family: 'black';
+        -webkit-filter: grayscale(0.5) blur(.1px);
+        opacity: .3;
+    }
+    .tally-value {
+        margin-left: 0px;
+        color: #111125;
+        height: 60px;
+        line-height: 55px;
+        text-decoration: none;
+        background-color: transparent;
+        font-family: 'black';
+        z-index: 3;
     }
     .author_name {
         height: 50px;

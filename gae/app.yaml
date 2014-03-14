@@ -17,6 +17,8 @@ handlers:
   static_dir: svg
 - url: /images
   static_dir: images
+- url: /fonts
+  static_dir: fonts
 
 - url: .*
   script: _q.app

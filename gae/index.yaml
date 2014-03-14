@@ -35,6 +35,17 @@ indexes:
   - name: date
     direction: desc
 
+- kind: OfficeHours
+  properties:
+  - name: class_name
+  - name: start_date_time
+
+- kind: OfficeHours
+  properties:
+  - name: class_name
+  - name: start_date_time
+    direction: desc
+
 - kind: Question
   ancestor: yes
   properties:

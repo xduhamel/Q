@@ -11,7 +11,7 @@ import time
 import cgi
 
 from random import randint
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import wsgiref.handlers
 import logging
@@ -30,9 +30,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
         extensions=['jinja2.ext.autoescape'],
         autoescape=True)
-
-_STORAGE = 'gs'
-_FILE = 'file'
 
 DEFAULT_NAME = 'gucci'
 DEFAULT_TIME = 'just now'
@@ -83,6 +80,7 @@ class Question(ndb.Model):
     contacts = ndb.JsonProperty('contacts')
     pic_id = ndb.StringProperty()
     is_pic = ndb.BooleanProperty('is_pic')
+    ask_time = ndb.StringProperty('ask_time')
 
 
 class Class(ndb.Model):
@@ -102,6 +100,7 @@ class OfficeHours(ndb.Model):
     """ Models and individual office hours instance """
 
     creator = ndb.UserProperty()
+    identifier = ndb.IntegerProperty()
     date = ndb.DateTimeProperty(auto_now_add=True)
     first_name = ndb.StringProperty('first_name')
     last_name = ndb.StringProperty('last_name')
@@ -110,6 +109,11 @@ class OfficeHours(ndb.Model):
     day = ndb.StringProperty('day')
     class_name = ndb.StringProperty('class_name')
     attending_count = ndb.IntegerProperty('count')
+    ended = ndb.BooleanProperty('ended')
+    active = ndb.BooleanProperty('acitve')
+    scheduled = ndb.BooleanProperty('scheduled')
+    start_date_time = ndb.DateTimeProperty('start_date_time')
+    end_date_time = ndb.DateTimeProperty('end_date_time')
 
 
 class Student(ndb.Model):
@@ -118,6 +122,7 @@ class Student(ndb.Model):
     user = ndb.UserProperty()
     classes = ndb.JsonProperty('class_list')
     prof_pic = ndb.BlobProperty()
+
 
 class JoinOhPage(webapp2.RequestHandler):
     """ Handles joining an instance of office hours """
@@ -163,22 +168,51 @@ class ViewSchedulePage(webapp2.RequestHandler):
         else:
             is_ta = True
 
-        oh_query = OfficeHours.query(OfficeHours.class_name == class_name) #.order(-OfficeHours.date)
+        oh_query = OfficeHours.query(OfficeHours.class_name == class_name).order(+OfficeHours.start_date_time)
         office_hours = oh_query.fetch()
+
+        if office_hours:
+            for oh in office_hours:
+                
+                # hack to account for utc time difference
+                now = datetime.now() - timedelta(hours=7)
+                
+                if oh.end_date_time < now:
+                    oh.ended = True
+                    oh.active = False
+                    oh.scheduled = False
+
+                elif oh.start_date_time < now and now < oh.end_date_time:
+                    oh.ended = False
+                    oh.active = True
+                    oh.scheduled = False
+
+                else:
+                    oh.ended = False
+                    oh.active = False 
+                    oh.scheduled = True
+        
         if not office_hours:
             no_office_hours = True
+        
         else:
             no_office_hours = False
+
+        if len(class_name) > 10:
+            nick_name = class_name[0:10] + '...'
+        else:
+            nick_name = class_name 
 
         template = JINJA_ENVIRONMENT.get_template('join_oh.html')
 
         template_values = {
             'no_oh': no_office_hours,
+            'nick_name': nick_name,
             'class_name': class_name,
             'office_hours': office_hours,
-            'url': url,
             'url_linktext': url_linktext,
-            'is_ta': is_ta
+            'is_ta': is_ta,
+            'url': url
         }
 
         self.response.write(template.render(template_values))
@@ -214,10 +248,6 @@ class MyClassesPage(webapp2.RequestHandler):
                 current_student.prof_pic = None
                 current_student.put()
 
-            #prof_pic = db.Blob(current_student.prof_pic)
-            #logging.info(db.Blob(current_student.prof_pic))
-            #logging.info(current_student.prof_pic)
-
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
@@ -246,7 +276,6 @@ class JoinClassPage(webapp2.RequestHandler):
         all_classes = DEFAULT_CLASS
         class_query = Class.query(Class.valid_class == True).order(-Class.creation_time)
         classes = class_query.fetch()
-
         current_user = users.get_current_user()
 
         student_query = Student.query(Student.user == current_user)
@@ -265,14 +294,13 @@ class JoinClassPage(webapp2.RequestHandler):
             elif not isinstance(current_classes, list):
                 current_classes = json.loads(current_classes)
 
-            logging.info(class_.title)
+
 
             #if class_.title not in current_classes or class_.title is not None:
             #    real_classes.append(class_)
 
             if class_.title not in current_classes:
-                logging.info('PARTAY!')
-                if class_.title is not None:
+                if len(class_.title) is not 0:
                     real_classes.append(class_)
 
         if users.get_current_user():
@@ -294,20 +322,27 @@ class JoinClassPage(webapp2.RequestHandler):
 
         self.response.write(template.render(template_values))
 
-
 class QPage(webapp2.RequestHandler):
     """ Handles the displaying of the Q. """
 
     def get(self, queue):
 
+
         class_name = queue.split('+')[0]
         link_name = queue.split('+')[1]
+        _id = int(link_name)
 
         question_name = queue
-        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.tally)  # HERE ---------
+        questions_query = Question.query(ancestor=question_key(queue)).order(-Question.tally)
         questions = questions_query.fetch()
-
         current_user = users.get_current_user()
+
+        oh_query = OfficeHours.query(OfficeHours.identifier == _id)
+        oh = oh_query.fetch()
+        if oh:
+            current_office_hours = oh[0]
+            current_office_hours.attending_count += 1
+            current_office_hours.put()
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -323,10 +358,11 @@ class QPage(webapp2.RequestHandler):
         classes = class_query.fetch()
 
         if classes:
+
             current_class = classes[0]
             current_tas = current_class.tas
-
             current_students = current_class.students
+
             if not isinstance(current_students, list):
                 current_students = json.loads(current_students)
 
@@ -334,17 +370,21 @@ class QPage(webapp2.RequestHandler):
                 is_student = True
 
             else:
-                is_student = True
+                is_student = False
 
             if not isinstance(current_tas, list):
                 current_tas = json.loads(current_tas)
 
             if current_user.user_id() in current_tas:
-                
                 for question in questions:
                     question.removable = True
+                    if question.tally == 0:
+                        question.answered = True
+                        question.removable = True  
+                is_ta = False
 
             else:
+                is_ta = True
                 for question in questions:
                     if not question.students:
                         question.students = []
@@ -354,7 +394,7 @@ class QPage(webapp2.RequestHandler):
 
                     else:
                         question.done = False
-
+                    
                     if question.tally == 0:
                         question.answered = True
                         question.removable = True 
@@ -382,6 +422,7 @@ class QPage(webapp2.RequestHandler):
                 'question_time': DEFAULT_TIME,
                 'current_user': is_student,
                 'link_name': link_name,
+                'is_student': is_ta,
         }
 
         self.response.write(template.render(template_values))
@@ -544,9 +585,6 @@ class ViewQuestionMembers(webapp2.RequestHandler):
             current_question = question[0]
             contacts = current_question.contacts
 
-            logging.info(contacts)
-            logging.info('88-|--88')
-
             template = JINJA_ENVIRONMENT.get_template('question_members.html')
             
             template_values = {
@@ -596,6 +634,18 @@ class CreateOfficeHours(webapp2.RequestHandler):
         office_hours.end_time = self.request.get('end_time')
         office_hours.day = self.request.get('day')
         office_hours.class_name = class_name
+        office_hours.identifier = datetime.now().microsecond
+        office_hours.attending_count = 0
+        office_hours.ended = False
+        office_hours.active = False
+        office_hours.scheduled = True
+
+        convert_start = office_hours.day + ' ' + office_hours.start_time
+        convert_end = office_hours.day + ' ' + office_hours.end_time
+
+        office_hours.start_date_time = datetime.strptime(convert_start, '%Y-%m-%d %H:%M')
+        office_hours.end_date_time = datetime.strptime(convert_end, '%Y-%m-%d %H:%M')
+
         office_hours.put()
 
         self.redirect('/schedule/' + class_name)
@@ -811,9 +861,11 @@ class RemoveClass(webapp2.RequestHandler):
                 class_ = class_query.fetch()
                 if class_:
                     current_class = class_[0]
-
-                    #if current_user.user_id() in current_class.students:
-                    #       current_class.students.
+                    if current_user.user_id() in current_class.tas:
+                        new_ta_list = current_class.tas
+                        new_ta_list.remove(current_user.user_id())
+                        current_class.tas = new_ta_list
+                        current_class.put()
 
         self.redirect('/')
 
@@ -845,7 +897,6 @@ class PostProblem(blobstore_handlers.BlobstoreUploadHandler):
 
         if users.get_current_user():
             question.author = users.get_current_user()
-
         
         upload_files = self.get_uploads('file')
         if upload_files:
@@ -865,7 +916,7 @@ class PostProblem(blobstore_handlers.BlobstoreUploadHandler):
         question.tally = 1
         question.students = [question.author.user_id()]
         question.contacts = [question.author.email()]
-
+        question.ask_time = datetime.strftime(datetime.now() - timedelta(hours=7), "%a, %b, %d %X")
         question.put()
 
         query_params = {'question_name': question_name}
@@ -899,7 +950,6 @@ class Blob(webapp2.RequestHandler):
         }
 
         self.response.write(template.render(template_values))
-
 
 
 app = webapp2.WSGIApplication([
