@@ -37,7 +37,7 @@
     text-align: center;
     font-family: 'thin'; 
     background-size: 15px 15px;
-    background-image: url('gird.jpg');
+    background-image: url('swag-millions.png');
   }
   @-webkit-keyframes fadeIn {
     from { opacity: 0;}
@@ -511,6 +511,9 @@
     text-align: center;
     color: #111125;
     margin-top: 19px;
+  }
+  input {
+    border: 1px solid blue;
   }
   .textfield {
       border-left-color: #aaa;
